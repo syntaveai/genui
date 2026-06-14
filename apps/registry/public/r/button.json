@@ -1,0 +1,18 @@
+{
+  "name": "button",
+  "type": "registry:ui",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "ui/button.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nconst buttonVariants = {\n  default: \"bg-gray-900 text-white hover:bg-gray-800\",\n  secondary: \"bg-gray-100 text-gray-900 hover:bg-gray-200\",\n  outline: \"border border-gray-200 bg-white hover:bg-gray-50 text-gray-900\",\n  ghost: \"hover:bg-gray-100 text-gray-900\",\n} as const;\n\nconst buttonSizes = {\n  default: \"h-9 px-4 py-2\",\n  sm: \"h-8 rounded-md px-3 text-xs\",\n  lg: \"h-10 rounded-md px-8\",\n  icon: \"h-9 w-9\",\n} as const;\n\nexport interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {\n  variant?: keyof typeof buttonVariants;\n  size?: keyof typeof buttonSizes;\n}\n\nconst Button = React.forwardRef<HTMLButtonElement, ButtonProps>(\n  ({ className, variant = \"default\", size = \"default\", ...props }, ref) => {\n    return (\n      <button\n        className={cn(\n          \"inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors\",\n          \"focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-900\",\n          \"disabled:pointer-events-none disabled:opacity-50\",\n          buttonVariants[variant],\n          buttonSizes[size],\n          className,\n        )}\n        ref={ref}\n        {...props}\n      />\n    );\n  },\n);\nButton.displayName = \"Button\";\n\nexport { Button, buttonVariants, buttonSizes };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A button primitive with variants for default, secondary, outline, and ghost."
+  }
+}

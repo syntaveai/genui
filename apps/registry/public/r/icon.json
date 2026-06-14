@@ -1,0 +1,19 @@
+{
+  "name": "icon",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "ui/icon.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport * as LucideIcons from \"lucide-react\";\nimport type { LucideProps } from \"lucide-react\";\n\nexport interface IconProps extends LucideProps {\n  name: string;\n}\n\nconst Icon = React.forwardRef<SVGSVGElement, IconProps>(\n  ({ name, className, size = 16, ...props }, ref) => {\n    const LucideIcon = (LucideIcons as unknown as Record<string, React.ComponentType<LucideProps>>)[name];\n\n    if (!LucideIcon) {\n      return null;\n    }\n\n    return (\n      <LucideIcon\n        ref={ref}\n        size={size}\n        className={cn(\"text-gray-500\", className)}\n        {...props}\n      />\n    );\n  },\n);\nIcon.displayName = \"Icon\";\n\nexport { Icon };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A standardized wrapper for lucide-react icons with consistent sizing and coloring."
+  }
+}

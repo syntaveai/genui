@@ -1,0 +1,18 @@
+{
+  "name": "skeleton",
+  "type": "registry:ui",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "ui/skeleton.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {}\n\nconst Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(\n  ({ className, ...props }, ref) => {\n    return (\n      <div\n        ref={ref}\n        className={cn(\"animate-pulse rounded-md bg-gray-100\", className)}\n        {...props}\n      />\n    );\n  },\n);\nSkeleton.displayName = \"Skeleton\";\n\nexport { Skeleton };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A loading placeholder primitive with subtle pulse animation."
+  }
+}

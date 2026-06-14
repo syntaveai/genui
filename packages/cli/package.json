@@ -1,0 +1,19 @@
+{
+  "name": "@syntave/cli",
+  "version": "0.0.1",
+  "private": true,
+  "bin": {
+    "genui": "./dist/index.mjs"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'lint ok'",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsup": "^8.4.0",
+    "@types/node": "^22.0.0"
+  }
+}

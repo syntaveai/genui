@@ -1,0 +1,18 @@
+{
+  "name": "text",
+  "type": "registry:ui",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "ui/text.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nconst variantClasses = {\n  h1: \"font-inter text-3xl font-semibold tracking-tight text-gray-900\",\n  h2: \"font-inter text-2xl font-semibold text-gray-900\",\n  h3: \"font-inter text-xl font-semibold text-gray-900\",\n  body: \"font-inter text-sm text-gray-900\",\n  muted: \"font-inter text-sm text-gray-500\",\n  code: \"font-mono text-sm text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded\",\n} as const;\n\nexport interface TextProps extends React.HTMLAttributes<HTMLElement> {\n  variant?: keyof typeof variantClasses;\n  as?: \"p\" | \"h1\" | \"h2\" | \"h3\" | \"span\" | \"div\";\n}\n\nfunction Text({ className, variant = \"body\", as: Component = \"p\", ...props }: TextProps) {\n  return (\n    <Component className={cn(variantClasses[variant], className)} {...props} />\n  );\n}\nText.displayName = \"Text\";\n\nexport { Text };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A typography primitive with predefined variants (h1, h2, h3, body, muted, code)."
+  }
+}

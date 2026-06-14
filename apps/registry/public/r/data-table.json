@@ -1,0 +1,58 @@
+{
+  "name": "data-table",
+  "type": "registry:ui",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "ui/data-table.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport {\n  Table,\n  TableHeader,\n  TableBody,\n  TableRow,\n  TableHead,\n  TableCell,\n} from \"./table\";\nimport { Text } from \"./text\";\n\nexport interface DataTableColumn {\n  accessorKey: string;\n  header: string;\n}\n\nexport interface DataTableProps {\n  columns: DataTableColumn[];\n  data?: Record<string, unknown>[];\n  isEmpty?: boolean;\n  fallbackMessage?: string;\n  className?: string;\n}\n\nexport function DataTable({\n  columns,\n  data,\n  isEmpty,\n  fallbackMessage,\n  className,\n}: DataTableProps) {\n  if (isEmpty) {\n    return (\n      <div\n        className={cn(\n          \"flex flex-col items-center justify-center rounded-lg border border-dashed border-gray-200 bg-gray-50 p-12\",\n          className,\n        )}\n      >\n        <Text variant=\"muted\" className=\"text-center\">\n          {fallbackMessage || \"No data available.\"}\n        </Text>\n      </div>\n    );\n  }\n\n  if (!data || data.length === 0) {\n    return (\n      <div\n        className={cn(\n          \"flex flex-col items-center justify-center rounded-lg border border-dashed border-gray-200 bg-gray-50 p-12\",\n          className,\n        )}\n      >\n        <Text variant=\"muted\" className=\"text-center\">\n          No data to display.\n        </Text>\n      </div>\n    );\n  }\n\n  return (\n    <div className={cn(\"overflow-hidden rounded-lg border border-gray-200\", className)}>\n      <Table>\n        <TableHeader>\n          <TableRow>\n            {columns.map((col) => (\n              <TableHead key={col.accessorKey}>{col.header}</TableHead>\n            ))}\n          </TableRow>\n        </TableHeader>\n        <TableBody>\n          {data.map((row, rowIdx) => (\n            <TableRow key={rowIdx}>\n              {columns.map((col) => (\n                <TableCell key={col.accessorKey}>\n                  {String(row[col.accessorKey] ?? \"\")}\n                </TableCell>\n              ))}\n            </TableRow>\n          ))}\n        </TableBody>\n      </Table>\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Displays structured tabular data with defined columns.",
+    "mcp_tool_definition": {
+      "name": "render_data_table",
+      "description": "Use this to display a list or breakdown of multiple items in a structured table format.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "description": "Array of column definitions with header and accessorKey",
+            "items": {
+              "type": "object",
+              "properties": {
+                "header": {
+                  "type": "string"
+                },
+                "accessorKey": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "header",
+                "accessorKey"
+              ]
+            }
+          },
+          "dataSource": {
+            "type": "string",
+            "description": "The registered data source to fetch table rows from"
+          },
+          "dataSourceParams": {
+            "type": "object",
+            "description": "Optional filters for the data source"
+          }
+        },
+        "required": [
+          "columns",
+          "dataSource"
+        ]
+      }
+    }
+  }
+}

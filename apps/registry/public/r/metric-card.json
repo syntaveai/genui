@@ -1,0 +1,44 @@
+{
+  "name": "metric-card",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "ui/metric-card.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { Card, CardContent } from \"./card\";\nimport { Text } from \"./text\";\nimport { Badge } from \"./badge\";\nimport { TrendingUp, TrendingDown } from \"lucide-react\";\n\nexport interface MetricCardProps {\n  title: string;\n  value: string | number;\n  description?: string;\n  trend?: { value: number; direction: \"up\" | \"down\" };\n  isEmpty?: boolean;\n  fallbackMessage?: string;\n  className?: string;\n}\n\nexport function MetricCard({\n  title,\n  value,\n  description,\n  trend,\n  isEmpty,\n  fallbackMessage,\n  className,\n}: MetricCardProps) {\n  if (isEmpty) {\n    return (\n      <Card\n        className={cn(\n          \"border-dashed border-gray-200 bg-gray-50\",\n          className,\n        )}\n      >\n        <CardContent className=\"flex flex-col items-center justify-center p-6\">\n          <Text variant=\"muted\" className=\"text-center\">\n            {fallbackMessage || \"No data available.\"}\n          </Text>\n        </CardContent>\n      </Card>\n    );\n  }\n\n  return (\n    <Card className={className}>\n      <CardContent className=\"p-6\">\n        <Text variant=\"muted\">{title}</Text>\n        <div className=\"mt-2 flex items-baseline gap-2\">\n          <Text variant=\"h2\" as=\"h3\" className=\"text-3xl\">\n            {value}\n          </Text>\n          {trend && (\n            <Badge\n              variant={trend.direction === \"up\" ? \"success\" : \"destructive\"}\n              className=\"flex items-center gap-1\"\n            >\n              {trend.direction === \"up\" ? (\n                <TrendingUp className=\"h-4 w-4\" />\n              ) : (\n                <TrendingDown className=\"h-4 w-4\" />\n              )}\n              {trend.value}%\n            </Badge>\n          )}\n        </div>\n        {description && (\n          <Text variant=\"muted\" className=\"mt-1\">\n            {description}\n          </Text>\n        )}\n      </CardContent>\n    </Card>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Displays a single KPI with optional trend data.",
+    "mcp_tool_definition": {
+      "name": "render_metric_card",
+      "description": "Use this to display a single, prominent data point like revenue, user count, or conversion rate.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The label for the metric"
+          },
+          "dataSource": {
+            "type": "string",
+            "description": "The registered data source to fetch real data from"
+          },
+          "dataSourceParams": {
+            "type": "object",
+            "description": "Optional parameters for the data source"
+          }
+        },
+        "required": [
+          "title",
+          "dataSource"
+        ]
+      }
+    }
+  }
+}

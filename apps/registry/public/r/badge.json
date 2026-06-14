@@ -1,0 +1,18 @@
+{
+  "name": "badge",
+  "type": "registry:ui",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "ui/badge.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nconst badgeVariants = {\n  default: \"bg-gray-900 text-white\",\n  secondary: \"bg-gray-100 text-gray-900\",\n  outline: \"border border-gray-200 text-gray-900\",\n  success: \"bg-green-50 text-green-600 border border-green-200\",\n  destructive: \"bg-red-50 text-red-600 border border-red-200\",\n} as const;\n\nexport interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {\n  variant?: keyof typeof badgeVariants;\n}\n\nconst Badge = React.forwardRef<HTMLDivElement, BadgeProps>(\n  ({ className, variant = \"default\", ...props }, ref) => {\n    return (\n      <div\n        ref={ref}\n        className={cn(\n          \"inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors\",\n          badgeVariants[variant],\n          className,\n        )}\n        {...props}\n      />\n    );\n  },\n);\nBadge.displayName = \"Badge\";\n\nexport { Badge, badgeVariants };\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A badge/tag primitive with variants for default, secondary, outline, success, and destructive."
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "fallback-message",
+  "type": "registry:ui",
+  "dependencies": [
+    "lucide-react",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "ui/fallback-message.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { AlertCircle, AlertTriangle, Info } from \"lucide-react\";\nimport { Text } from \"./text\";\n\nexport interface FallbackMessageProps {\n  message: string;\n  variant?: \"empty\" | \"error\" | \"info\";\n  className?: string;\n}\n\nconst variantStyles = {\n  empty: {\n    container: \"bg-gray-50 border-dashed border-gray-200\",\n    icon: AlertCircle,\n    iconColor: \"text-gray-500\",\n    textColor: \"text-gray-500\",\n  },\n  error: {\n    container: \"bg-red-50 border-red-200\",\n    icon: AlertTriangle,\n    iconColor: \"text-red-600\",\n    textColor: \"text-red-900\",\n  },\n  info: {\n    container: \"bg-gray-50 border-gray-200\",\n    icon: Info,\n    iconColor: \"text-gray-500\",\n    textColor: \"text-gray-500\",\n  },\n} as const;\n\nexport function FallbackMessage({\n  message,\n  variant = \"info\",\n  className,\n}: FallbackMessageProps) {\n  const styles = variantStyles[variant];\n  const IconComponent = styles.icon;\n\n  return (\n    <div\n      className={cn(\n        \"flex flex-col items-center justify-center rounded-lg border p-12\",\n        styles.container,\n        className,\n      )}\n    >\n      <IconComponent className={cn(\"mb-3 h-8 w-8\", styles.iconColor)} />\n      <Text variant=\"muted\" className={cn(styles.textColor, \"text-center\")}>\n        {message}\n      </Text>\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A graceful UI state for when data is unavailable or a request cannot be fulfilled.",
+    "mcp_tool_definition": {
+      "name": "render_fallback_message",
+      "description": "Use this ONLY when you cannot fulfill the user's request with available data sources. Do not use for normal conversational responses.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The explanation of why the request cannot be fulfilled"
+          },
+          "variant": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "error",
+              "info"
+            ],
+            "description": "The visual style of the fallback"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  }
+}
