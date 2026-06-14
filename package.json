@@ -6,17 +6,31 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "test": "turbo test",
+    "test:e2e": "playwright test",
     "typecheck": "turbo typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
-    "clean": "turbo clean"
+    "clean": "turbo clean",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "turbo": "^2.5.0",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "prettier": "^3.5.0",
     "prettier-plugin-tailwindcss": "^0.6.0",
-    "typescript": "^5.7.0",
-    "@types/node": "^22.0.0",
-    "eslint": "^9.0.0"
+    "turbo": "^2.5.0",
+    "typescript": "^5.7.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "bash -c 'pnpm typecheck'"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   },
   "packageManager": "pnpm@10.12.3",
   "engines": {

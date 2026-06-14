@@ -21,8 +21,15 @@ type RegistryManifest = {
 };
 
 const KNOWN_PRIMITIVES = new Set([
-  "card", "table", "separator", "text", "badge", "skeleton",
-  "button", "input", "icon",
+  "card",
+  "table",
+  "separator",
+  "text",
+  "badge",
+  "skeleton",
+  "button",
+  "input",
+  "icon",
 ]);
 
 async function fetchRegistry(name: string): Promise<RegistryManifest> {
@@ -68,8 +75,11 @@ function readProjectConfig(projectRoot: string): {
   const jsconfigPath = resolve(projectRoot, "jsconfig.json");
   const componentsJsonPath = resolve(projectRoot, "components.json");
 
-  const configPath = existsSync(tsconfigPath) ? tsconfigPath :
-    existsSync(jsconfigPath) ? jsconfigPath : null;
+  const configPath = existsSync(tsconfigPath)
+    ? tsconfigPath
+    : existsSync(jsconfigPath)
+      ? jsconfigPath
+      : null;
 
   if (configPath) {
     try {
@@ -83,21 +93,29 @@ function readProjectConfig(projectRoot: string): {
           aliases[cleanAlias] = resolve(dirname(configPath), target);
         }
       }
-    } catch { /* ignore parse errors */ }
+    } catch {
+      /* ignore parse errors */
+    }
   }
 
   if (existsSync(componentsJsonPath)) {
     try {
       const raw = readFileSync(componentsJsonPath, "utf-8");
       existingComponents = JSON.parse(raw).installedComponents ?? [];
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   return { aliases, existingComponents };
 }
 
-function resolveOutputDir(projectRoot: string, aliases: Record<string, string>): string {
-  const uiAlias = aliases["@/components/ui"] || aliases["~/components/ui"] || aliases["@"];
+function resolveOutputDir(
+  projectRoot: string,
+  aliases: Record<string, string>,
+): string {
+  const uiAlias =
+    aliases["@/components/ui"] || aliases["~/components/ui"] || aliases["@"];
 
   if (uiAlias) {
     const fullPath = resolve(projectRoot, uiAlias, "ui");
@@ -156,19 +174,29 @@ function updateComponentsJson(projectRoot: string, name: string) {
   console.log(`  Updated: components.json`);
 }
 
-async function installDependencies(projectRoot: string, deps: string[], existingDeps: string[]) {
+async function installDependencies(
+  projectRoot: string,
+  deps: string[],
+  existingDeps: string[],
+) {
   const missing = deps.filter((d) => !existingDeps.includes(d));
   if (missing.length === 0) return;
 
   const pm = detectPackageManager(projectRoot);
-  const installCmd = pm === "pnpm" ? "pnpm add" : pm === "yarn" ? "yarn add" : "npm install";
+  const installCmd =
+    pm === "pnpm" ? "pnpm add" : pm === "yarn" ? "yarn add" : "npm install";
 
   console.log(`\n  Installing missing dependencies: ${missing.join(", ")}`);
   try {
-    execSync(`${installCmd} ${missing.join(" ")}`, { cwd: projectRoot, stdio: "pipe" });
+    execSync(`${installCmd} ${missing.join(" ")}`, {
+      cwd: projectRoot,
+      stdio: "pipe",
+    });
     console.log(`  Dependencies installed.`);
   } catch {
-    console.log(`  Warning: Could not auto-install. Run: ${installCmd} ${missing.join(" ")}`);
+    console.log(
+      `  Warning: Could not auto-install. Run: ${installCmd} ${missing.join(" ")}`,
+    );
   }
 }
 
@@ -221,6 +249,55 @@ async function installComponent(
   updateComponentsJson(projectRoot, componentName);
 }
 
+function kebabToPascal(str: string): string {
+  return str
+    .split("-")
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join("");
+}
+
+function generateGenuiFile(
+  projectRoot: string,
+  aliases: Record<string, string>,
+  installed: string[],
+) {
+  const genuiDir = resolve(projectRoot, "src", "components");
+  const genuiPath = resolve(genuiDir, "genui.ts");
+
+  if (!existsSync(genuiDir)) {
+    mkdirSync(genuiDir, { recursive: true });
+  }
+
+  const importPrefix =
+    aliases["@/components"] || aliases["~/components"] || "@/components";
+
+  const imports = installed
+    .map((name) => {
+      const pascal = kebabToPascal(name);
+      return `import { ${pascal} } from "${importPrefix}/ui/${name}";`;
+    })
+    .join("\n");
+
+  const entries = installed
+    .map((name) => {
+      const pascal = kebabToPascal(name);
+      return `  ${pascal}: ${pascal} as unknown as React.ComponentType<Record<string, unknown>>,`;
+    })
+    .join("\n");
+
+  const content = `import type { ComponentMap } from "@syntave/runtime";
+import React from "react";
+${imports}
+
+export const componentMap: ComponentMap = {
+${entries}
+};
+`;
+
+  writeFileSync(genuiPath, content, "utf-8");
+  console.log(`  Generated: src/components/genui.ts`);
+}
+
 function printHelp() {
   console.log(`
 Syntave GenUI CLI — Add Generative UI components to your project.
@@ -251,7 +328,7 @@ async function main() {
 
   const componentName = args[1];
   if (!componentName) {
-    console.error('Usage: npx genui add <component-name>');
+    console.error("Usage: npx genui add <component-name>");
     process.exit(1);
   }
 
@@ -261,10 +338,19 @@ async function main() {
   const { aliases, existingComponents } = readProjectConfig(projectRoot);
   const existingDeps = readPackageDeps(projectRoot);
 
-  await installComponent(projectRoot, componentName, aliases, existingComponents, existingDeps);
+  await installComponent(
+    projectRoot,
+    componentName,
+    aliases,
+    existingComponents,
+    existingDeps,
+  );
 
-  const depList = ["clsx", "tailwind-merge"].join(", ");
-  console.log(`\n⚠️  Ensure these dependencies are installed:\n   ${depList}\n`);
+  // Re-read installed components (includes the one we just added) and generate genui.ts
+  const { existingComponents: updatedInstalled } =
+    readProjectConfig(projectRoot);
+  generateGenuiFile(projectRoot, aliases, updatedInstalled);
+
   console.log(`✅ ${componentName} installed successfully.\n`);
 }
 

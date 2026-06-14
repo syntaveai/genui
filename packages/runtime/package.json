@@ -17,18 +17,18 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.tsx src/server.ts --format esm,cjs --dts --external react",
+    "build": "tsup src/index.tsx src/server.ts --format esm,cjs --dts --external react --external react-dom --external @syntave/ui",
     "typecheck": "tsc --noEmit",
     "lint": "echo 'lint ok'",
     "clean": "rm -rf dist"
   },
   "peerDependencies": {
-    "react": "^19.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "typescript": "^5.7.0",
     "tsup": "^8.4.0",
-    "@types/react": "^19.0.0",
-    "@syntave/ui": "workspace:*"
+    "@types/react": "^19.0.0"
   }
 }

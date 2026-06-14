@@ -2,8 +2,22 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { GenerativeUI } from "@syntave/runtime";
+import type { ComponentMap } from "@syntave/runtime";
 import { resolvePayload } from "@syntave/runtime/server";
 import { AlertCircle, Play, RotateCcw } from "lucide-react";
+import { MetricCard, DataTable, FallbackMessage } from "@syntave/ui";
+
+const componentMap: ComponentMap = {
+  MetricCard: MetricCard as unknown as React.ComponentType<
+    Record<string, unknown>
+  >,
+  DataTable: DataTable as unknown as React.ComponentType<
+    Record<string, unknown>
+  >,
+  FallbackMessage: FallbackMessage as unknown as React.ComponentType<
+    Record<string, unknown>
+  >,
+};
 
 type SimMode = "none" | "mock" | "empty" | "error";
 
@@ -21,7 +35,13 @@ const DEFAULT_JSON = JSON.stringify(
   2,
 );
 
-const MOCK_DATA_SOURCES: Record<string, { handler: () => Promise<unknown>; paramsSchema?: { parse: (p: unknown) => unknown } }> = {
+const MOCK_DATA_SOURCES: Record<
+  string,
+  {
+    handler: () => Promise<unknown>;
+    paramsSchema?: { parse: (p: unknown) => unknown };
+  }
+> = {
   get_revenue: {
     handler: async () => [
       { month: "Jan", amount: 38000 },
@@ -100,7 +120,7 @@ export default function PlaygroundPage() {
   }, []);
 
   return (
-    <div className="flex h-screen flex-col bg-gray-50 font-inter">
+    <div className="font-inter flex h-screen flex-col bg-gray-50">
       <header className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3">
         <h1 className="text-lg font-semibold tracking-tight text-gray-900">
           GenUI Playground
@@ -109,7 +129,7 @@ export default function PlaygroundPage() {
           <select
             value={simMode}
             onChange={(e) => setSimMode(e.target.value as SimMode)}
-            className="rounded-md border border-gray-200 bg-white px-3 py-1.5 font-inter text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="font-inter rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200"
           >
             <option value="none">No Resolver</option>
             <option value="mock">Mock Data</option>
@@ -162,7 +182,10 @@ export default function PlaygroundPage() {
           </div>
           <div className="flex-1 overflow-auto bg-white p-6">
             {resolvedPayload ? (
-              <GenerativeUI payload={resolvedPayload as any} />
+              <GenerativeUI
+                payload={resolvedPayload as any}
+                componentMap={componentMap}
+              />
             ) : (
               <div className="flex h-full items-center justify-center">
                 <p className="text-sm font-medium text-gray-500">
