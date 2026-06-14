@@ -18,3 +18,9 @@ export {
   FallbackMessageSchema,
   FallbackMessagePropsSchema,
 } from "./fallback-message";
+export {
+  DynamicComponentLLMSchema,
+  DynamicComponentPropsSchema,
+  DynamicElementSchema,
+} from "./dynamic-component";
+export type { DynamicElement } from "./dynamic-component";
