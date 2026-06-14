@@ -2,7 +2,8 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { resolve, dirname, relative } from "node:path";
-import { execSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
+import { z } from "zod";
 
 const REGISTRY_BASE = "https://genui.syntave.com/r";
 
@@ -17,8 +18,24 @@ type RegistryManifest = {
   type: string;
   dependencies: string[];
   files: RegistryFile[];
-  meta: Record<string, unknown>;
+  meta?: Record<string, unknown>;
 };
+
+const RegistryManifestSchema = z.object({
+  name: z.string().min(1),
+  type: z.string().min(1),
+  dependencies: z.array(z.string()).default([]),
+  files: z
+    .array(
+      z.object({
+        path: z.string().min(1),
+        content: z.string(),
+        type: z.string(),
+      }),
+    )
+    .min(1),
+  meta: z.record(z.unknown()).optional(),
+});
 
 const KNOWN_PRIMITIVES = new Set([
   "card",
@@ -45,7 +62,14 @@ async function fetchRegistry(name: string): Promise<RegistryManifest> {
     process.exit(1);
   }
 
-  return response.json() as Promise<RegistryManifest>;
+  const raw = await response.json();
+  try {
+    return RegistryManifestSchema.parse(raw);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`Invalid registry manifest for "${name}": ${message}`);
+    process.exit(1);
+  }
 }
 
 function resolveProjectRoot(): string {
@@ -183,19 +207,25 @@ async function installDependencies(
   if (missing.length === 0) return;
 
   const pm = detectPackageManager(projectRoot);
-  const installCmd =
-    pm === "pnpm" ? "pnpm add" : pm === "yarn" ? "yarn add" : "npm install";
+  const pmCmd = pm === "pnpm" ? "pnpm" : pm === "yarn" ? "yarn" : "npm";
+  const pmInstall = pm === "yarn" ? "add" : "install";
 
   console.log(`\n  Installing missing dependencies: ${missing.join(", ")}`);
   try {
-    execSync(`${installCmd} ${missing.join(" ")}`, {
+    const result = spawnSync(pmCmd, [pmInstall, ...missing], {
       cwd: projectRoot,
       stdio: "pipe",
     });
-    console.log(`  Dependencies installed.`);
+    if (result.status === 0) {
+      console.log(`  Dependencies installed.`);
+    } else {
+      console.log(
+        `  Warning: Could not auto-install. Run: ${pmCmd} ${pmInstall} ${missing.join(" ")}`,
+      );
+    }
   } catch {
     console.log(
-      `  Warning: Could not auto-install. Run: ${installCmd} ${missing.join(" ")}`,
+      `  Warning: Could not auto-install. Run: ${pmCmd} ${pmInstall} ${missing.join(" ")}`,
     );
   }
 }

@@ -1,11 +1,40 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, Component } from "react";
 import { GenerativeUI } from "@syntave/runtime";
 import type { ComponentMap } from "@syntave/runtime";
 import { resolvePayload } from "@syntave/runtime/server";
 import { AlertCircle, Play, RotateCcw } from "lucide-react";
 import { MetricCard, DataTable, FallbackMessage } from "@syntave/ui";
+
+class GenUIErrorBoundary extends Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  override state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  override componentDidCatch(error: Error, _errorInfo: React.ErrorInfo) {
+    console.error("[Playground] Component render error:", error);
+  }
+
+  override render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex h-full items-center justify-center">
+          <FallbackMessage
+            message="Component render error. Check the JSON payload."
+            variant="error"
+          />
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const componentMap: ComponentMap = {
   MetricCard: MetricCard as unknown as React.ComponentType<
@@ -181,18 +210,20 @@ export default function PlaygroundPage() {
             )}
           </div>
           <div className="flex-1 overflow-auto bg-white p-6">
-            {resolvedPayload ? (
-              <GenerativeUI
-                payload={resolvedPayload as any}
-                componentMap={componentMap}
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center">
-                <p className="text-sm font-medium text-gray-500">
-                  Click &quot;Resolve&quot; to preview the component
-                </p>
-              </div>
-            )}
+            <GenUIErrorBoundary>
+              {resolvedPayload ? (
+                <GenerativeUI
+                  payload={resolvedPayload as any}
+                  componentMap={componentMap}
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center">
+                  <p className="text-sm font-medium text-gray-500">
+                    Click &quot;Resolve&quot; to preview the component
+                  </p>
+                </div>
+              )}
+            </GenUIErrorBoundary>
           </div>
         </div>
       </div>

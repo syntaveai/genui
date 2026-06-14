@@ -31,10 +31,12 @@
                   "properties": {
                     "header": {
                       "type": "string",
+                      "minLength": 1,
                       "description": "The visible column header (e.g., 'Country')"
                     },
                     "accessorKey": {
                       "type": "string",
+                      "minLength": 1,
                       "description": "The key in the data object to display (e.g., 'country_name')"
                     }
                   },

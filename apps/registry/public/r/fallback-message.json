@@ -26,6 +26,7 @@
             "properties": {
               "message": {
                 "type": "string",
+                "minLength": 1,
                 "description": "A polite, clear, and concise explanation of why the data cannot be shown or what the user should do next."
               },
               "variant": {

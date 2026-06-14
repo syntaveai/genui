@@ -26,6 +26,7 @@
             "properties": {
               "title": {
                 "type": "string",
+                "minLength": 1,
                 "description": "The label for the metric (e.g., 'Monthly Recurring Revenue')"
               },
               "dataSource": {

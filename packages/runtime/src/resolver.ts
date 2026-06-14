@@ -27,8 +27,10 @@ export async function resolvePayload(
   const dataSource =
     typeof rawDataSource === "string" ? rawDataSource : undefined;
 
-  if (dataSource && dataSource in allowedDataSources) {
-    const registration = allowedDataSources[dataSource]!;
+  if (dataSource && Object.hasOwn(allowedDataSources, dataSource)) {
+    const registration = allowedDataSources[
+      dataSource
+    ] as DataSourceRegistration;
 
     try {
       let validatedParams: unknown = dataSourceParams;
@@ -73,7 +75,7 @@ export async function resolvePayload(
     }
   }
 
-  if (dataSource && !(dataSource in allowedDataSources)) {
+  if (dataSource && !Object.hasOwn(allowedDataSources, dataSource)) {
     return {
       type: "FallbackMessage",
       props: {

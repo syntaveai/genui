@@ -110,6 +110,10 @@ function transformImports(sourceCode, componentName) {
     if (moduleSpecifier.includes("/lib/utils") || moduleSpecifier === "./lib/utils") {
       imp.setModuleSpecifier("@/lib/utils");
     }
+
+    if (moduleSpecifier.startsWith("../") && !moduleSpecifier.startsWith("./")) {
+      console.warn(`Warning: ${componentName} has relative import "${moduleSpecifier}" — may need manual review`);
+    }
   });
 
   return sourceFile.getFullText();
@@ -141,35 +145,46 @@ function buildRegistry() {
   }
 
   for (const entry of REGISTRY) {
-    const componentPath = resolve(UI_SRC, entry.componentFile);
-    const rawSource = readSource(componentPath);
-    const componentSource = transformImports(rawSource, entry.name);
+    try {
+      const componentPath = resolve(UI_SRC, entry.componentFile);
 
-    const zodSchema = SCHEMAS[entry.name];
-    const mcp = generateMCPDefinition(entry.name, zodSchema);
+      if (!existsSync(componentPath)) {
+        console.error(`Missing source file: ${entry.componentFile}`);
+        process.exit(1);
+      }
 
-    const meta = { description: entry.description };
-    if (mcp) {
-      meta.mcp_tool_definition = mcp;
+      const rawSource = readSource(componentPath);
+      const componentSource = transformImports(rawSource, entry.name);
+
+      const zodSchema = SCHEMAS[entry.name];
+      const mcp = generateMCPDefinition(entry.name, zodSchema);
+
+      const meta = { description: entry.description };
+      if (mcp) {
+        meta.mcp_tool_definition = mcp;
+      }
+
+      const registry = {
+        name: entry.name,
+        type: "registry:ui",
+        dependencies: entry.dependencies,
+        files: [
+          {
+            path: `ui/${entry.componentFile}`,
+            content: componentSource,
+            type: "registry:ui",
+          },
+        ],
+        meta,
+      };
+
+      const outputPath = resolve(PUBLIC_R, `${entry.name}.json`);
+      writeFileSync(outputPath, JSON.stringify(registry, null, 2), "utf-8");
+      console.log(`Generated: ${entry.name}.json`);
+    } catch (err) {
+      console.error(`Failed to build ${entry.name}: ${err.message}`);
+      process.exit(1);
     }
-
-    const registry = {
-      name: entry.name,
-      type: "registry:ui",
-      dependencies: entry.dependencies,
-      files: [
-        {
-          path: `ui/${entry.componentFile}`,
-          content: componentSource,
-          type: "registry:ui",
-        },
-      ],
-      meta,
-    };
-
-    const outputPath = resolve(PUBLIC_R, `${entry.name}.json`);
-    writeFileSync(outputPath, JSON.stringify(registry, null, 2), "utf-8");
-    console.log(`Generated: ${entry.name}.json`);
   }
 
   // Write utils.json so the CLI can fetch it

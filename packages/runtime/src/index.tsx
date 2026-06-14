@@ -16,7 +16,9 @@ export function GenerativeUI({ payload, componentMap }: GenerativeUIProps) {
     return null;
   }
 
-  const Component = componentMap[payload.type];
+  const Component = Object.hasOwn(componentMap, payload.type)
+    ? componentMap[payload.type]
+    : undefined;
 
   if (!Component) {
     return (
@@ -29,5 +31,5 @@ export function GenerativeUI({ payload, componentMap }: GenerativeUIProps) {
     );
   }
 
-  return <Component {...payload.props} />;
+  return <Component {...(payload.props ?? {})} />;
 }
