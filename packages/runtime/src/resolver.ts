@@ -19,8 +19,13 @@ export async function resolvePayload(
   llmPayload: LlmPayload,
   allowedDataSources: Record<string, DataSourceRegistration>,
 ): Promise<ResolvedPayload> {
-  const { dataSource: rawDataSource, dataSourceParams, ...otherProps } = llmPayload.props;
-  const dataSource = typeof rawDataSource === "string" ? rawDataSource : undefined;
+  const {
+    dataSource: rawDataSource,
+    dataSourceParams,
+    ...otherProps
+  } = llmPayload.props;
+  const dataSource =
+    typeof rawDataSource === "string" ? rawDataSource : undefined;
 
   if (dataSource && dataSource in allowedDataSources) {
     const registration = allowedDataSources[dataSource]!;
@@ -53,7 +58,11 @@ export async function resolvePayload(
         type: llmPayload.type,
         props: { ...otherProps, data: realData },
       };
-    } catch {
+    } catch (error) {
+      console.error(
+        `[Syntave Resolver] Data source "${dataSource}" failed:`,
+        error,
+      );
       return {
         type: "FallbackMessage",
         props: {

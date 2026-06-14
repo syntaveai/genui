@@ -1,11 +1,25 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
+import { Project } from "ts-morph";
+import { zodToJsonSchema } from "zod-to-json-schema";
+
+import {
+  MetricCardLLMSchema,
+  DataTableLLMSchema,
+  FallbackMessageLLMSchema,
+} from "@syntave/schemas";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 const UI_SRC = resolve(ROOT, "../../packages/ui/src");
 const PUBLIC_R = resolve(ROOT, "public/r");
+
+const SCHEMAS = {
+  "metric-card": MetricCardLLMSchema,
+  "data-table": DataTableLLMSchema,
+  "fallback-message": FallbackMessageLLMSchema,
+};
 
 const REGISTRY = [
   {
@@ -13,69 +27,19 @@ const REGISTRY = [
     componentFile: "metric-card.tsx",
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
     description: "Displays a single KPI with optional trend data.",
-    mcp: {
-      name: "render_metric_card",
-      description: "Use this to display a single, prominent data point like revenue, user count, or conversion rate.",
-      parameters: {
-        type: "object",
-        properties: {
-          title: { type: "string", description: "The label for the metric" },
-          dataSource: { type: "string", description: "The registered data source to fetch real data from" },
-          dataSourceParams: { type: "object", description: "Optional parameters for the data source" },
-        },
-        required: ["title", "dataSource"],
-      },
-    },
   },
   {
     name: "data-table",
     componentFile: "data-table.tsx",
     dependencies: ["clsx", "tailwind-merge"],
     description: "Displays structured tabular data with defined columns.",
-    mcp: {
-      name: "render_data_table",
-      description: "Use this to display a list or breakdown of multiple items in a structured table format.",
-      parameters: {
-        type: "object",
-        properties: {
-          columns: {
-            type: "array",
-            description: "Array of column definitions with header and accessorKey",
-            items: {
-              type: "object",
-              properties: {
-                header: { type: "string" },
-                accessorKey: { type: "string" },
-              },
-              required: ["header", "accessorKey"],
-            },
-          },
-          dataSource: { type: "string", description: "The registered data source to fetch table rows from" },
-          dataSourceParams: { type: "object", description: "Optional filters for the data source" },
-        },
-        required: ["columns", "dataSource"],
-      },
-    },
   },
   {
     name: "fallback-message",
     componentFile: "fallback-message.tsx",
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
     description: "A graceful UI state for when data is unavailable or a request cannot be fulfilled.",
-    mcp: {
-      name: "render_fallback_message",
-      description: "Use this ONLY when you cannot fulfill the user's request with available data sources. Do not use for normal conversational responses.",
-      parameters: {
-        type: "object",
-        properties: {
-          message: { type: "string", description: "The explanation of why the request cannot be fulfilled" },
-          variant: { type: "string", enum: ["empty", "error", "info"], description: "The visual style of the fallback" },
-        },
-        required: ["message"],
-      },
-    },
   },
-  // Base Primitives
   {
     name: "card",
     componentFile: "card.tsx",
@@ -136,12 +100,40 @@ function readSource(filePath) {
   return readFileSync(filePath, "utf-8");
 }
 
-function transformImports(source, componentName) {
-  return source.replace(
-    /from\s+["']\.\/lib\/utils["']/g,
-    'from "@/lib/utils"',
-  );
+function transformImports(sourceCode, componentName) {
+  const project = new Project({ useInMemoryFileSystem: true });
+  const sourceFile = project.createSourceFile(`${componentName}.tsx`, sourceCode);
+
+  sourceFile.getImportDeclarations().forEach((imp) => {
+    const moduleSpecifier = imp.getModuleSpecifierValue();
+
+    if (moduleSpecifier.includes("/lib/utils") || moduleSpecifier === "./lib/utils") {
+      imp.setModuleSpecifier("@/lib/utils");
+    }
+  });
+
+  return sourceFile.getFullText();
 }
+
+function generateMCPDefinition(componentName, zodSchema) {
+  if (!zodSchema) return null;
+
+  const jsonSchema = zodToJsonSchema(zodSchema, { target: "jsonSchema7" });
+
+  return {
+    name: `render_${componentName.replace(/-/g, "_")}`,
+    description: zodSchema._def.description || `Renders the ${componentName} component.`,
+    parameters: jsonSchema,
+  };
+}
+
+const UTILS_SOURCE = `import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+`;
 
 function buildRegistry() {
   if (!existsSync(PUBLIC_R)) {
@@ -153,9 +145,12 @@ function buildRegistry() {
     const rawSource = readSource(componentPath);
     const componentSource = transformImports(rawSource, entry.name);
 
+    const zodSchema = SCHEMAS[entry.name];
+    const mcp = generateMCPDefinition(entry.name, zodSchema);
+
     const meta = { description: entry.description };
-    if (entry.mcp) {
-      meta.mcp_tool_definition = entry.mcp;
+    if (mcp) {
+      meta.mcp_tool_definition = mcp;
     }
 
     const registry = {
@@ -176,6 +171,26 @@ function buildRegistry() {
     writeFileSync(outputPath, JSON.stringify(registry, null, 2), "utf-8");
     console.log(`Generated: ${entry.name}.json`);
   }
+
+  // Write utils.json so the CLI can fetch it
+  const utilsRegistry = {
+    name: "utils",
+    type: "registry:lib",
+    dependencies: ["clsx", "tailwind-merge"],
+    files: [
+      {
+        path: "lib/utils.ts",
+        content: UTILS_SOURCE,
+        type: "registry:lib",
+      },
+    ],
+    meta: {
+      description: "Utility functions for class name merging with Tailwind CSS.",
+    },
+  };
+  const utilsOutputPath = resolve(PUBLIC_R, "utils.json");
+  writeFileSync(utilsOutputPath, JSON.stringify(utilsRegistry, null, 2), "utf-8");
+  console.log("Generated: utils.json");
 }
 
 buildRegistry();

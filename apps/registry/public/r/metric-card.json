@@ -1,11 +1,7 @@
 {
   "name": "metric-card",
   "type": "registry:ui",
-  "dependencies": [
-    "lucide-react",
-    "clsx",
-    "tailwind-merge"
-  ],
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
   "files": [
     {
       "path": "ui/metric-card.tsx",
@@ -17,27 +13,38 @@
     "description": "Displays a single KPI with optional trend data.",
     "mcp_tool_definition": {
       "name": "render_metric_card",
-      "description": "Use this to display a single, prominent data point like revenue, user count, or conversion rate.",
+      "description": "Renders the metric-card component.",
       "parameters": {
         "type": "object",
         "properties": {
-          "title": {
+          "type": {
             "type": "string",
-            "description": "The label for the metric"
+            "const": "MetricCard"
           },
-          "dataSource": {
-            "type": "string",
-            "description": "The registered data source to fetch real data from"
-          },
-          "dataSourceParams": {
+          "props": {
             "type": "object",
-            "description": "Optional parameters for the data source"
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "The label for the metric (e.g., 'Monthly Recurring Revenue')"
+              },
+              "dataSource": {
+                "type": "string",
+                "description": "The exact name of the registered data source to fetch this metric from."
+              },
+              "dataSourceParams": {
+                "type": "object",
+                "additionalProperties": {},
+                "description": "Optional parameters to pass to the data source (e.g., { region: 'US' })"
+              }
+            },
+            "required": ["title", "dataSource"],
+            "additionalProperties": false
           }
         },
-        "required": [
-          "title",
-          "dataSource"
-        ]
+        "required": ["type", "props"],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
       }
     }
   }

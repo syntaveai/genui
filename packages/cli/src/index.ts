@@ -215,6 +215,44 @@ function readPackageDeps(projectRoot: string): string[] {
   }
 }
 
+async function ensureUtils(
+  projectRoot: string,
+  aliases: Record<string, string>,
+  existingDeps: string[],
+) {
+  const libAlias =
+    aliases["@"] || aliases["~"] || aliases["@/*"] || aliases["~/*"];
+
+  let libDir: string;
+  if (libAlias) {
+    libDir = resolve(projectRoot, libAlias.replace("/*", ""), "lib");
+  } else {
+    libDir = resolve(projectRoot, "src", "lib");
+  }
+
+  const utilsPath = resolve(libDir, "utils.ts");
+  if (existsSync(utilsPath)) return;
+
+  console.log("\n  lib/utils.ts not found. Installing from registry...");
+  const url = `${REGISTRY_BASE}/utils.json`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    console.log("  Warning: Could not fetch utils.json from registry.");
+    return;
+  }
+  const manifest: RegistryManifest = await response.json();
+  for (const file of manifest.files) {
+    const fullPath = resolve(libDir, file.path.replace("lib/", ""));
+    const dir = resolve(fullPath, "..");
+    if (!existsSync(dir)) {
+      mkdirSync(dir, { recursive: true });
+    }
+    writeFileSync(fullPath, file.content, "utf-8");
+    console.log(`  Created: ${file.path}`);
+  }
+  await installDependencies(projectRoot, manifest.dependencies, existingDeps);
+}
+
 async function installComponent(
   projectRoot: string,
   componentName: string,
@@ -337,6 +375,8 @@ async function main() {
   const projectRoot = resolveProjectRoot();
   const { aliases, existingComponents } = readProjectConfig(projectRoot);
   const existingDeps = readPackageDeps(projectRoot);
+
+  await ensureUtils(projectRoot, aliases, existingDeps);
 
   await installComponent(
     projectRoot,

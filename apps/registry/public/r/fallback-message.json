@@ -1,11 +1,7 @@
 {
   "name": "fallback-message",
   "type": "registry:ui",
-  "dependencies": [
-    "lucide-react",
-    "clsx",
-    "tailwind-merge"
-  ],
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
   "files": [
     {
       "path": "ui/fallback-message.tsx",
@@ -17,27 +13,35 @@
     "description": "A graceful UI state for when data is unavailable or a request cannot be fulfilled.",
     "mcp_tool_definition": {
       "name": "render_fallback_message",
-      "description": "Use this ONLY when you cannot fulfill the user's request with available data sources. Do not use for normal conversational responses.",
+      "description": "Renders the fallback-message component.",
       "parameters": {
         "type": "object",
         "properties": {
-          "message": {
+          "type": {
             "type": "string",
-            "description": "The explanation of why the request cannot be fulfilled"
+            "const": "FallbackMessage"
           },
-          "variant": {
-            "type": "string",
-            "enum": [
-              "empty",
-              "error",
-              "info"
-            ],
-            "description": "The visual style of the fallback"
+          "props": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "A polite, clear, and concise explanation of why the data cannot be shown or what the user should do next."
+              },
+              "variant": {
+                "type": "string",
+                "enum": ["empty", "error", "info"],
+                "default": "info",
+                "description": "The visual style of the message. 'empty' for no data, 'error' for system failures, 'info' for missing permissions/context."
+              }
+            },
+            "required": ["message"],
+            "additionalProperties": false
           }
         },
-        "required": [
-          "message"
-        ]
+        "required": ["type", "props"],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
       }
     }
   }

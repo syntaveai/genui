@@ -1,10 +1,7 @@
 {
   "name": "data-table",
   "type": "registry:ui",
-  "dependencies": [
-    "clsx",
-    "tailwind-merge"
-  ],
+  "dependencies": ["clsx", "tailwind-merge"],
   "files": [
     {
       "path": "ui/data-table.tsx",
@@ -16,42 +13,53 @@
     "description": "Displays structured tabular data with defined columns.",
     "mcp_tool_definition": {
       "name": "render_data_table",
-      "description": "Use this to display a list or breakdown of multiple items in a structured table format.",
+      "description": "Renders the data-table component.",
       "parameters": {
         "type": "object",
         "properties": {
-          "columns": {
-            "type": "array",
-            "description": "Array of column definitions with header and accessorKey",
-            "items": {
-              "type": "object",
-              "properties": {
-                "header": {
-                  "type": "string"
-                },
-                "accessorKey": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "header",
-                "accessorKey"
-              ]
-            }
-          },
-          "dataSource": {
+          "type": {
             "type": "string",
-            "description": "The registered data source to fetch table rows from"
+            "const": "DataTable"
           },
-          "dataSourceParams": {
+          "props": {
             "type": "object",
-            "description": "Optional filters for the data source"
+            "properties": {
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "header": {
+                      "type": "string",
+                      "description": "The visible column header (e.g., 'Country')"
+                    },
+                    "accessorKey": {
+                      "type": "string",
+                      "description": "The key in the data object to display (e.g., 'country_name')"
+                    }
+                  },
+                  "required": ["header", "accessorKey"],
+                  "additionalProperties": false
+                },
+                "description": "The columns to display in the table"
+              },
+              "dataSource": {
+                "type": "string",
+                "description": "The exact name of the registered data source to fetch the table rows from."
+              },
+              "dataSourceParams": {
+                "type": "object",
+                "additionalProperties": {},
+                "description": "Optional parameters to filter the data source (e.g., { limit: 10, status: 'active' })"
+              }
+            },
+            "required": ["columns", "dataSource"],
+            "additionalProperties": false
           }
         },
-        "required": [
-          "columns",
-          "dataSource"
-        ]
+        "required": ["type", "props"],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
       }
     }
   }
