@@ -1,8 +1,24 @@
 export { cn } from "./lib/utils";
 
 // Primitives
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./card";
-export { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from "./table";
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "./card";
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from "./table";
 export { Separator } from "./separator";
 export type { SeparatorProps } from "./separator";
 export { Text } from "./text";
@@ -25,3 +41,7 @@ export { DataTable } from "./data-table";
 export type { DataTableColumn, DataTableProps } from "./data-table";
 export { FallbackMessage } from "./fallback-message";
 export type { FallbackMessageProps } from "./fallback-message";
+export { PieChart } from "./pie-chart";
+export type { PieChartProps } from "./pie-chart";
+export { ProgressBar } from "./progress-bar";
+export type { ProgressBarProps } from "./progress-bar";

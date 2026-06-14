@@ -19,8 +19,8 @@ export {
   FallbackMessagePropsSchema,
 } from "./fallback-message";
 export {
-  DynamicComponentLLMSchema,
-  DynamicComponentPropsSchema,
-  DynamicElementSchema,
-} from "./dynamic-component";
-export type { DynamicElement } from "./dynamic-component";
+  PieChartLLMSchema,
+  PieChartPropsSchema,
+  PieChartDataPointSchema,
+} from "./pie-chart";
+export { ProgressBarLLMSchema, ProgressBarPropsSchema } from "./progress-bar";

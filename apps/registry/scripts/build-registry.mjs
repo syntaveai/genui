@@ -8,6 +8,8 @@ import {
   MetricCardLLMSchema,
   DataTableLLMSchema,
   FallbackMessageLLMSchema,
+  PieChartLLMSchema,
+  ProgressBarLLMSchema,
 } from "@syntave/schemas";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -19,6 +21,8 @@ const SCHEMAS = {
   "metric-card": MetricCardLLMSchema,
   "data-table": DataTableLLMSchema,
   "fallback-message": FallbackMessageLLMSchema,
+  "pie-chart": PieChartLLMSchema,
+  "progress-bar": ProgressBarLLMSchema,
 };
 
 const REGISTRY = [
@@ -93,6 +97,18 @@ const REGISTRY = [
     componentFile: "icon.tsx",
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
     description: "A standardized wrapper for lucide-react icons with consistent sizing and coloring.",
+  },
+  {
+    name: "pie-chart",
+    componentFile: "pie-chart.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "A monochrome SVG pie chart with labeled segments and percentage labels.",
+  },
+  {
+    name: "progress-bar",
+    componentFile: "progress-bar.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "A horizontal progress bar with label, value, and percentage display.",
   },
 ];
 
