@@ -1,9 +1,19 @@
 {
   "name": "@syntave/cli",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.0.2",
+  "private": false,
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "bin": {
     "genui": "./dist/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syntaveai/genui.git",
+    "directory": "packages/cli"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",

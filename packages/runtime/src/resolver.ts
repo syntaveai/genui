@@ -56,9 +56,16 @@ export async function resolvePayload(
         };
       }
 
+      const dataProps =
+        typeof realData === "object" &&
+        realData !== null &&
+        !Array.isArray(realData)
+          ? (realData as Record<string, unknown>)
+          : { data: realData };
+
       return {
         type: llmPayload.type,
-        props: { ...otherProps, data: realData },
+        props: { ...dataProps, ...otherProps },
       };
     } catch (error) {
       console.error(

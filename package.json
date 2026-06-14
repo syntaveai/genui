@@ -35,5 +35,23 @@
   "packageManager": "pnpm@10.12.3",
   "engines": {
     "node": ">=20.0.0"
-  }
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syntaveai/genui.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/syntaveai/genui/issues"
+  },
+  "homepage": "https://github.com/syntaveai/genui#readme"
 }

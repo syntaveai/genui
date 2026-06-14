@@ -1,7 +1,10 @@
 {
   "name": "@syntave/schemas",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

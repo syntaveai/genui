@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GenUI Components Configuration",
+  "description": "Configuration file for GenUI component registry installation.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "URI pointing to this JSON Schema file."
+    },
+    "registry": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base URL of the GenUI component registry."
+    },
+    "installedComponents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of component names installed from the registry."
+    },
+    "aliases": {
+      "type": "object",
+      "properties": {
+        "ui": {
+          "type": "string",
+          "description": "Path to UI component directory."
+        },
+        "utils": {
+          "type": "string",
+          "description": "Path to utility functions file."
+        }
+      },
+      "additionalProperties": true,
+      "description": "Path aliases used by the project."
+    },
+    "tsx": {
+      "type": "boolean",
+      "description": "Whether to generate .tsx files."
+    },
+    "tailwindConfig": {
+      "type": "string",
+      "description": "Path to Tailwind CSS configuration."
+    }
+  },
+  "required": ["registry", "installedComponents"],
+  "additionalProperties": true
+}

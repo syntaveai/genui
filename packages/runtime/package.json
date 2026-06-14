@@ -1,9 +1,15 @@
 {
   "name": "@syntave/runtime",
-  "version": "0.0.1",
-  "private": true,
-  "main": "./src/index.tsx",
-  "types": "./src/index.tsx",
+  "version": "0.0.2",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syntaveai/genui.git",
+    "directory": "packages/runtime"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -15,6 +21,9 @@
       "import": "./dist/server.mjs",
       "require": "./dist/server.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsup src/index.tsx src/server.ts --format esm,cjs --dts --external react --external react-dom --external @syntave/ui",
