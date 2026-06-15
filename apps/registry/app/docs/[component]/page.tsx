@@ -16,6 +16,7 @@ import {
 } from "@syntave/schemas";
 import { CodeBlock } from "./code-block";
 import { SchemaView } from "./schema-view";
+import { ComponentDemo } from "./component-demo";
 
 interface Props {
   params: Promise<{ component: string }>;
@@ -318,6 +319,8 @@ export default async function ComponentDocPage({ params }: Props) {
           npx genui add {component}
         </pre>
       </section>
+
+      <ComponentDemo component={component} />
     </div>
   );
 }
