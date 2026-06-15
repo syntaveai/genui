@@ -45,3 +45,41 @@ export { PieChart } from "./pie-chart";
 export type { PieChartProps } from "./pie-chart";
 export { ProgressBar } from "./progress-bar";
 export type { ProgressBarProps } from "./progress-bar";
+
+// New batch 1: Interaction & Display
+export { Alert, AlertTitle, AlertDescription } from "./alert";
+export type { AlertProps } from "./alert";
+export { Checkbox } from "./checkbox";
+export type { CheckboxProps } from "./checkbox";
+export {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "./dialog";
+export { Select } from "./select";
+export type { SelectProps, SelectOption } from "./select";
+export { Switch } from "./switch";
+export type { SwitchProps } from "./switch";
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
+export type { TabsProps } from "./tabs";
+
+// Batch 2: Navigation & Overlay
+export {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "./accordion";
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "./collapsible";
+export type { CollapsibleProps } from "./collapsible";
+export { Popover, PopoverTrigger, PopoverContent } from "./popover";
+export { Tooltip } from "./tooltip";
+export type { TooltipProps } from "./tooltip";

@@ -110,6 +110,66 @@ const REGISTRY = [
     dependencies: ["clsx", "tailwind-merge"],
     description: "A horizontal progress bar with label, value, and percentage display.",
   },
+  {
+    name: "alert",
+    componentFile: "alert.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A callout for user attention with info, success, warning, and error variants.",
+  },
+  {
+    name: "checkbox",
+    componentFile: "checkbox.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A control that allows the user to toggle between checked and not checked.",
+  },
+  {
+    name: "dialog",
+    componentFile: "dialog.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A modal dialog with header, title, description, and footer sections.",
+  },
+  {
+    name: "select",
+    componentFile: "select.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A custom select dropdown with option list and keyboard navigation.",
+  },
+  {
+    name: "switch",
+    componentFile: "switch.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "A toggle switch control for binary settings.",
+  },
+  {
+    name: "tabs",
+    componentFile: "tabs.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "A set of layered sections of content displayed one at a time via tab triggers.",
+  },
+  {
+    name: "accordion",
+    componentFile: "accordion.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A vertically stacked set of interactive headings that each reveal a section of content.",
+  },
+  {
+    name: "collapsible",
+    componentFile: "collapsible.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "An interactive component which expands/collapses a panel.",
+  },
+  {
+    name: "popover",
+    componentFile: "popover.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "Displays rich content in a portal, triggered by a button.",
+  },
+  {
+    name: "tooltip",
+    componentFile: "tooltip.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "A popup that displays information related to an element on hover or focus.",
+  },
 ];
 
 function readSource(filePath) {
