@@ -253,6 +253,8 @@ export default async function ComponentDocPage({ params }: Props) {
         <p className="mt-2 text-gray-500">{description}</p>
       </div>
 
+      <ComponentDemo component={component} />
+
       {deps.length > 0 && (
         <section className="space-y-3">
           <h2 className="font-inter text-lg font-semibold text-gray-800">
@@ -319,8 +321,6 @@ export default async function ComponentDocPage({ params }: Props) {
           npx genui add {component}
         </pre>
       </section>
-
-      <ComponentDemo component={component} />
     </div>
   );
 }
