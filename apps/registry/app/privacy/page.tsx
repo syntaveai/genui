@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Shield } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "Privacy Policy for Syntave GenUI — open-source component registry and runtime for Generative UI. Minimal data collection, no tracking cookies.",
+  openGraph: {
+    title: "Privacy Policy | Syntave GenUI",
+    description:
+      "Syntave GenUI Privacy Policy — minimal data collection, no tracking cookies, 30-day log retention.",
+    url: "https://genuui.syntave.com/privacy",
+  },
+};
 
 export default function PrivacyPage() {
   return (

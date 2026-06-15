@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { DocsNav } from "../../components/docs-nav";
+
+export const metadata: Metadata = {
+  title: "Documentation",
+  description:
+    "Learn how to use Syntave GenUI — a Generative UI framework with type-safe React components, CLI installation, Zod schemas, and LLM-driven interfaces.",
+  openGraph: {
+    title: "Documentation | Syntave GenUI",
+    description:
+      "Learn how to use Syntave GenUI — 57 accessible React components with CLI installation and LLM-driven tool calling.",
+    url: "https://genuui.syntave.com/docs",
+  },
+};
 
 export default function DocsLayout({
   children,

@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Package } from "lucide-react";
 import { CopyButton } from "../../../components/copy-button";
+
+export const metadata: Metadata = {
+  title: "Installation",
+  description:
+    "Install Syntave GenUI components via npm and CLI. Get started with @syntave/schemas, @syntave/runtime, @syntave/cli, and @syntave/ui.",
+  openGraph: {
+    title: "Installation | Syntave GenUI",
+    description:
+      "Install Syntave GenUI — npm packages and CLI tool for Generative UI components.",
+    url: "https://genuui.syntave.com/docs/installation",
+  },
+};
 
 const PACKAGES = [
   {

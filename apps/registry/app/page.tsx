@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -12,6 +13,23 @@ import {
   BookOpen,
   Sparkles,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Syntave GenUI - AI-Native Component Registry for Generative UI",
+  description:
+    "Open-source component registry and runtime for building AI-driven user interfaces. 57 accessible, monochrome React components with Zod schemas for LLM tool calling.",
+  openGraph: {
+    title: "Syntave GenUI - AI-Native Component Registry for Generative UI",
+    description:
+      "Open-source component registry and runtime for building AI-driven user interfaces. 57 accessible React components with Zod schemas for LLM tool calling.",
+    url: "https://genuui.syntave.com/",
+  },
+  twitter: {
+    title: "Syntave GenUI - AI-Native Component Registry",
+    description:
+      "Open-source component registry and runtime for building AI-driven user interfaces.",
+  },
+};
 
 const FEATURES = [
   {

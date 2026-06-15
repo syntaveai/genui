@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description:
+    "Terms of Service for Syntave GenUI — open-source Generative UI framework distributed under the ISC license.",
+  openGraph: {
+    title: "Terms of Service | Syntave GenUI",
+    description:
+      "Syntave GenUI Terms of Service — ISC-licensed open-source Generative UI framework.",
+    url: "https://genuui.syntave.com/terms",
+  },
+};
 
 export default function TermsPage() {
   return (

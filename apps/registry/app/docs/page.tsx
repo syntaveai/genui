@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Boxes, Shield, Workflow, Terminal } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Introduction",
+  description:
+    "Syntave GenUI is a Generative UI framework that lets LLMs render real, type-safe React components through a registry-driven model. 57 components with Zod schemas.",
+  openGraph: {
+    title: "Introduction | Syntave GenUI",
+    description:
+      "Generative UI framework for type-safe, LLM-driven React components with Zod validation and CLI installation.",
+    url: "https://genuui.syntave.com/docs",
+  },
+};
 
 export default function DocsIntroductionPage() {
   return (

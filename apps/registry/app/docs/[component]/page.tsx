@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { notFound } from "next/navigation";
@@ -219,6 +220,33 @@ function getRegistryData(component: string) {
   const filePath = resolve(process.cwd(), "public", "r", `${component}.json`);
   if (!existsSync(filePath)) return null;
   return JSON.parse(readFileSync(filePath, "utf-8"));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { component } = await params;
+  const meta = COMPONENT_META[component];
+  if (!meta) return {};
+
+  const label = meta.label;
+  const category = meta.isGenUI ? "GenUI Component" : "Primitive Component";
+  const displayName = `${label} — ${category}`;
+
+  return {
+    title: `${label} Component Documentation`,
+    description: `Documentation and API reference for the ${label} ${category.toLowerCase()} in Syntave GenUI. ${meta.isGenUI ? "Zod schema, props, and LLM tool definition." : "Props, usage, and installation via npx genui add."}`,
+    openGraph: {
+      title: `${label} | Syntave GenUI Components`,
+      description: `Documentation for the ${label} ${category.toLowerCase()} — accessible, type-safe React component for Generative UI.`,
+      url: `https://genuui.syntave.com/docs/${component}`,
+    },
+    twitter: {
+      title: `${label} | Syntave GenUI`,
+      description: `Documentation for the ${label} ${category.toLowerCase()} — accessible, type-safe React component for Generative UI.`,
+    },
+    alternates: {
+      canonical: `https://genuui.syntave.com/docs/${component}`,
+    },
+  };
 }
 
 export function generateStaticParams() {
