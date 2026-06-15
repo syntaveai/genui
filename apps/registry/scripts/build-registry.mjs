@@ -170,6 +170,36 @@ const REGISTRY = [
     dependencies: ["clsx", "tailwind-merge"],
     description: "A popup that displays information related to an element on hover or focus.",
   },
+  {
+    name: "sheet",
+    componentFile: "sheet.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A slide-in panel from the left or right edge of the screen.",
+  },
+  {
+    name: "drawer",
+    componentFile: "drawer.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A slide-up panel from the bottom of the screen with a drag handle.",
+  },
+  {
+    name: "slider",
+    componentFile: "slider.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "An input where the user selects a value from within a given range.",
+  },
+  {
+    name: "radio-group",
+    componentFile: "radio-group.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A set of checkable radio buttons where no more than one can be checked.",
+  },
+  {
+    name: "native-select",
+    componentFile: "native-select.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A styled native HTML select element with consistent design system integration.",
+  },
 ];
 
 function readSource(filePath) {

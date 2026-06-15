@@ -83,3 +83,21 @@ export type { CollapsibleProps } from "./collapsible";
 export { Popover, PopoverTrigger, PopoverContent } from "./popover";
 export { Tooltip } from "./tooltip";
 export type { TooltipProps } from "./tooltip";
+
+// Batch 3
+export {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "./sheet";
+export { Drawer, DrawerTrigger, DrawerContent } from "./drawer";
+export type { DrawerProps } from "./drawer";
+export { Slider } from "./slider";
+export type { SliderProps } from "./slider";
+export { RadioGroup, RadioGroupItem } from "./radio-group";
+export type { RadioGroupProps } from "./radio-group";
+export { NativeSelect } from "./native-select";
+export type { NativeSelectProps } from "./native-select";
