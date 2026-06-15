@@ -84,6 +84,12 @@ importers:
 
   apps/registry:
     dependencies:
+      '@syntave/schemas':
+        specifier: workspace:*
+        version: link:../../packages/schemas
+      '@syntave/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.2.7)
@@ -106,12 +112,6 @@ importers:
         specifier: ^3.25.2
         version: 3.25.2(zod@3.25.76)
     devDependencies:
-      '@syntave/schemas':
-        specifier: workspace:*
-        version: link:../../packages/schemas
-      '@syntave/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.21
