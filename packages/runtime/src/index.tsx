@@ -1,5 +1,3 @@
-import { DynamicRenderer } from "./dynamic-renderer";
-
 export type ComponentMap = Record<
   string,
   React.ComponentType<Record<string, unknown>>
@@ -16,10 +14,6 @@ export interface GenerativeUIProps {
 export function GenerativeUI({ payload, componentMap }: GenerativeUIProps) {
   if (!payload?.type) {
     return null;
-  }
-
-  if (payload.type === "DynamicComponent") {
-    return <DynamicRenderer {...(payload.props as any)} />;
   }
 
   const Component = Object.hasOwn(componentMap, payload.type)
@@ -39,5 +33,3 @@ export function GenerativeUI({ payload, componentMap }: GenerativeUIProps) {
 
   return <Component {...(payload.props ?? {})} />;
 }
-
-export { DynamicRenderer } from "./dynamic-renderer";

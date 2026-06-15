@@ -1,6 +1,6 @@
 {
   "name": "@syntave/runtime",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": false,
   "repository": {
     "type": "git",
@@ -38,7 +38,6 @@
   "devDependencies": {
     "typescript": "^5.7.0",
     "tsup": "^8.4.0",
-    "@types/react": "^19.0.0",
-    "@syntave/schemas": "workspace:*"
+    "@types/react": "^19.0.0"
   }
 }
