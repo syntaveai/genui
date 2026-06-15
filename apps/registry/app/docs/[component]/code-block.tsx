@@ -26,6 +26,7 @@ function highlightSyntax(code: string): string {
     .replace(/(\{|\}|\(|\))/g, '<span class="text-gray-400">$1</span>');
 }
 
+/** CodeBlock renders pre-sanitized source code. The `code` prop comes from registry files (developer-authored), never from user input. If reused with user data, must pre-escape HTML first. */
 export function CodeBlock({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
 

@@ -37,19 +37,20 @@
     "node": ">=20.0.0"
   },
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "description": "Component registry and runtime for AI-driven user interfaces",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/syntaveai/genui.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": [
+    "genui",
+    "generative-ui",
+    "react",
+    "llm",
+    "component-registry"
+  ],
+  "author": "Syntave",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/syntaveai/genui/issues"
   },

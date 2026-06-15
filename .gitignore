@@ -3,7 +3,16 @@ node_modules/
 dist/
 .turbo/
 *.tsbuildinfo
+.env
 .env.local
-.env*.local
+.env.*.local
+.env.development
+.env.production
+*.pem
+*.key
+*.cert
+secrets*
+credentials*
+.dockerignore
 
 .vercel
