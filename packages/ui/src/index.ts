@@ -119,3 +119,63 @@ export type { ToggleProps } from "./toggle";
 export { ToastProvider, toast, useToast } from "./toast";
 export { ScrollArea } from "./scroll-area";
 export type { ScrollAreaProps } from "./scroll-area";
+
+// Batch 5: Utilities
+export { Avatar } from "./avatar";
+export type { AvatarProps } from "./avatar";
+export { Spinner } from "./spinner";
+export type { SpinnerProps } from "./spinner";
+export { Label } from "./label";
+export type { LabelProps } from "./label";
+export { Kbd } from "./kbd";
+export type { KbdProps } from "./kbd";
+export { AspectRatio } from "./aspect-ratio";
+export type { AspectRatioProps } from "./aspect-ratio";
+export { ButtonGroup } from "./button-group";
+export type { ButtonGroupProps } from "./button-group";
+export { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+export type { ToggleGroupProps } from "./toggle-group";
+export { InputGroup, InputGroupAddon } from "./input-group";
+export type { InputGroupProps } from "./input-group";
+export { Field } from "./field";
+export type { FieldProps } from "./field";
+
+// Batch 6: Interactive
+export {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "./alert-dialog";
+export { Combobox } from "./combobox";
+export type { ComboboxProps, ComboboxOption } from "./combobox";
+export { ContextMenu } from "./context-menu";
+export type { ContextMenuProps } from "./context-menu";
+export { HoverCard } from "./hover-card";
+export type { HoverCardProps } from "./hover-card";
+export { Menubar, MenubarMenu, MenubarItem, MenubarSeparator } from "./menubar";
+export { NavigationMenu } from "./navigation-menu";
+export type { NavigationMenuProps, NavItem } from "./navigation-menu";
+export { InputOTP } from "./input-otp";
+export type { InputOTPProps } from "./input-otp";
+export { SonnerProvider, sonner } from "./sonner";
+export { DirectionProvider, useDirection } from "./direction";
+
+// Batch 7: Complex
+export { Command } from "./command";
+export type { CommandProps, CommandItem } from "./command";
+export { Carousel } from "./carousel";
+export type { CarouselProps } from "./carousel";
+export { ResizablePanelGroup } from "./resizable";
+export type { ResizablePanelGroupProps } from "./resizable";
+export { Sidebar } from "./sidebar";
+export type { SidebarProps, SidebarItem } from "./sidebar";
+export { Calendar } from "./calendar";
+export type { CalendarProps } from "./calendar";
+export { DatePicker } from "./date-picker";
+export type { DatePickerProps } from "./date-picker";
