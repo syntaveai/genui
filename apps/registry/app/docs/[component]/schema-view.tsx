@@ -1,6 +1,6 @@
 export function SchemaView({ text }: { text: string }) {
   return (
-    <pre className="overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-700">
+    <pre className="border-syntave-200 bg-syntave-950 text-syntave-300 overflow-x-auto rounded-xl border p-5 font-mono text-sm leading-relaxed">
       <code>{text}</code>
     </pre>
   );

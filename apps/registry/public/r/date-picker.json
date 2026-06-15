@@ -1,0 +1,15 @@
+{
+  "name": "date-picker",
+  "type": "registry:ui",
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/date-picker.tsx",
+      "content": "\"use client\";\n\nimport { useState, useRef, useEffect } from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { CalendarIcon } from \"lucide-react\";\nimport { Calendar } from \"./calendar\";\n\nexport interface DatePickerProps {\n  value?: Date;\n  onChange?: (date: Date) => void;\n  placeholder?: string;\n  className?: string;\n}\n\nfunction formatDate(date: Date): string {\n  return date.toLocaleDateString(\"en-US\", {\n    month: \"short\",\n    day: \"numeric\",\n    year: \"numeric\",\n  });\n}\n\nexport function DatePicker({\n  value,\n  onChange,\n  placeholder = \"Pick a date\",\n  className,\n}: DatePickerProps) {\n  const [open, setOpen] = useState(false);\n  const ref = useRef<HTMLDivElement>(null);\n\n  useEffect(() => {\n    const h = (e: MouseEvent) => {\n      if (ref.current && !ref.current.contains(e.target as Node))\n        setOpen(false);\n    };\n    document.addEventListener(\"mousedown\", h);\n    return () => document.removeEventListener(\"mousedown\", h);\n  }, []);\n\n  return (\n    <div ref={ref} className={cn(\"relative\", className)}>\n      <button\n        type=\"button\"\n        onClick={() => setOpen(!open)}\n        className=\"flex w-full items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400\"\n      >\n        <CalendarIcon className=\"h-4 w-4 text-gray-400\" />\n        <span className={value ? \"text-gray-900\" : \"text-gray-400\"}>\n          {value ? formatDate(value) : placeholder}\n        </span>\n      </button>\n      {open && (\n        <div className=\"absolute left-0 top-full z-50 mt-1\">\n          <Calendar\n            value={value}\n            onChange={(d) => {\n              onChange?.(d);\n              setOpen(false);\n            }}\n          />\n        </div>\n      )}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A date picker component with range and presets."
+  }
+}

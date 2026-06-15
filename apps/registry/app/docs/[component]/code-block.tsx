@@ -16,14 +16,14 @@ const KEYWORDS =
 
 function highlightSyntax(code: string): string {
   return escapeHtml(code)
-    .replace(/(\/\/.*)/g, '<span class="text-gray-400">$1</span>')
-    .replace(/(["'`].*?["'`])/g, '<span class="text-emerald-600">$1</span>')
-    .replace(KEYWORDS, '<span class="text-purple-600">$1</span>')
+    .replace(/(\/\/.*)/g, '<span class="text-syntave-500">$1</span>')
+    .replace(/(["'`].*?["'`])/g, '<span class="text-syntave-300">$1</span>')
+    .replace(KEYWORDS, '<span class="text-syntave-400">$1</span>')
     .replace(
       /\b(string|number|boolean|void|React\.[A-Za-z]+|Record|Element)\b/g,
-      '<span class="text-blue-600">$1</span>',
+      '<span class="text-syntave-300">$1</span>',
     )
-    .replace(/(\{|\}|\(|\))/g, '<span class="text-gray-400">$1</span>');
+    .replace(/(\{|\}|\(|\))/g, '<span class="text-syntave-500">$1</span>');
 }
 
 /** CodeBlock renders pre-sanitized source code. The `code` prop comes from registry files (developer-authored), never from user input. If reused with user data, must pre-escape HTML first. */
@@ -37,14 +37,14 @@ export function CodeBlock({ code }: { code: string }) {
   };
 
   return (
-    <div className="relative rounded-lg border border-gray-200 bg-gray-50">
+    <div className="border-syntave-200 bg-syntave-950 group relative overflow-hidden rounded-xl border">
       <button
         onClick={handleCopy}
-        className="absolute right-3 top-3 rounded-md p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600"
+        className="text-syntave-500 absolute right-4 top-4 rounded-lg p-1.5 opacity-0 transition-all hover:bg-white/10 hover:text-white group-hover:opacity-100"
       >
         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
       </button>
-      <pre className="overflow-x-auto p-4 font-mono text-sm leading-relaxed">
+      <pre className="overflow-x-auto p-5 font-mono text-sm leading-relaxed">
         <code dangerouslySetInnerHTML={{ __html: highlightSyntax(code) }} />
       </pre>
     </div>

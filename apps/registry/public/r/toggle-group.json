@@ -1,0 +1,15 @@
+{
+  "name": "toggle-group",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/toggle-group.tsx",
+      "content": "\"use client\";\n\nimport { useState, useCallback, createContext, useContext } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\ninterface ToggleGroupCtxValue {\n  value: string | string[];\n  onToggle: (v: string) => void;\n}\n\nconst ToggleGroupCtx = createContext<ToggleGroupCtxValue>({\n  value: \"\",\n  onToggle: () => {},\n});\n\nexport interface ToggleGroupProps {\n  type?: \"single\" | \"multiple\";\n  value?: string | string[];\n  defaultValue?: string | string[];\n  onValueChange?: (value: string | string[]) => void;\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function ToggleGroup({\n  type = \"single\",\n  value: controlledValue,\n  defaultValue,\n  onValueChange,\n  children,\n  className,\n}: ToggleGroupProps) {\n  const multiple = type === \"multiple\";\n  const [internalValue, setInternalValue] = useState(\n    defaultValue ?? (multiple ? [] : \"\"),\n  );\n  const isControlled = controlledValue !== undefined;\n  const value = isControlled ? controlledValue : internalValue;\n\n  const handleToggle = useCallback(\n    (itemValue: string) => {\n      let next: string | string[];\n      if (multiple) {\n        const arr = (Array.isArray(value) ? value : []) as string[];\n        next = arr.includes(itemValue)\n          ? arr.filter((v) => v !== itemValue)\n          : [...arr, itemValue];\n      } else {\n        next = value === itemValue ? \"\" : itemValue;\n      }\n      if (!isControlled) setInternalValue(next);\n      onValueChange?.(next);\n    },\n    [value, multiple, isControlled, onValueChange],\n  );\n\n  return (\n    <ToggleGroupCtx.Provider value={{ value, onToggle: handleToggle }}>\n      <div\n        className={cn(\n          \"inline-flex items-center rounded-md border border-gray-200 bg-gray-100 p-1\",\n          className,\n        )}\n      >\n        {children}\n      </div>\n    </ToggleGroupCtx.Provider>\n  );\n}\n\nexport function ToggleGroupItem({\n  value: itemValue,\n  children,\n  className,\n}: {\n  value: string;\n  children?: React.ReactNode;\n  className?: string;\n}) {\n  const ctx = useContext(ToggleGroupCtx);\n  const isActive = Array.isArray(ctx.value)\n    ? ctx.value.includes(itemValue)\n    : ctx.value === itemValue;\n\n  return (\n    <button\n      type=\"button\"\n      onClick={() => ctx.onToggle(itemValue)}\n      className={cn(\n        \"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors\",\n        isActive\n          ? \"bg-white text-gray-900 shadow-sm\"\n          : \"text-gray-500 hover:text-gray-700\",\n        className,\n      )}\n    >\n      {children}\n    </button>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A set of two-state buttons that can be toggled on or off."
+  }
+}

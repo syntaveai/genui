@@ -1,0 +1,15 @@
+{
+  "name": "switch",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/switch.tsx",
+      "content": "\"use client\";\n\nimport { useState, useCallback } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface SwitchProps {\n  checked?: boolean;\n  defaultChecked?: boolean;\n  onCheckedChange?: (checked: boolean) => void;\n  disabled?: boolean;\n  className?: string;\n}\n\nexport function Switch({\n  checked: controlledChecked,\n  defaultChecked = false,\n  onCheckedChange,\n  disabled,\n  className,\n}: SwitchProps) {\n  const [internalChecked, setInternalChecked] = useState(defaultChecked);\n  const isControlled = controlledChecked !== undefined;\n  const checked = isControlled ? controlledChecked : internalChecked;\n\n  const handleClick = useCallback(() => {\n    if (disabled) return;\n    const next = !checked;\n    if (!isControlled) setInternalChecked(next);\n    onCheckedChange?.(next);\n  }, [checked, disabled, isControlled, onCheckedChange]);\n\n  return (\n    <button\n      role=\"switch\"\n      aria-checked={checked}\n      disabled={disabled}\n      onClick={handleClick}\n      className={cn(\n        \"peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50\",\n        checked ? \"bg-gray-900\" : \"bg-gray-200\",\n        className,\n      )}\n    >\n      <span\n        className={cn(\n          \"pointer-events-none block h-4 w-4 rounded-full bg-white shadow-sm ring-0 transition-transform\",\n          checked ? \"translate-x-4\" : \"translate-x-0\",\n        )}\n      />\n    </button>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A toggle switch control for binary settings."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "scroll-area",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/scroll-area.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport interface ScrollAreaProps {\n  children?: React.ReactNode;\n  className?: string;\n  orientation?: \"vertical\" | \"horizontal\" | \"both\";\n}\n\nexport function ScrollArea({\n  children,\n  className,\n  orientation = \"vertical\",\n}: ScrollAreaProps) {\n  const overflow =\n    orientation === \"horizontal\"\n      ? \"overflow-x-auto\"\n      : orientation === \"both\"\n        ? \"overflow-auto\"\n        : \"overflow-y-auto\";\n\n  return <div className={cn(\"relative\", overflow, className)}>{children}</div>;\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Augments native scroll functionality for custom, cross-browser styling."
+  }
+}

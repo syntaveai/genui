@@ -1,0 +1,15 @@
+{
+  "name": "native-select",
+  "type": "registry:ui",
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/native-select.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { ChevronDown } from \"lucide-react\";\n\nexport interface NativeSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {\n  options: { value: string; label: string }[];\n  placeholder?: string;\n}\n\nexport function NativeSelect({\n  options,\n  placeholder,\n  className,\n  ...props\n}: NativeSelectProps) {\n  return (\n    <div className=\"relative\">\n      <select\n        className={cn(\n          \"flex h-10 w-full appearance-none rounded-md border border-gray-200 bg-white px-3 py-2 pr-8 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:cursor-not-allowed disabled:opacity-50\",\n          className,\n        )}\n        {...props}\n      >\n        {placeholder && (\n          <option value=\"\" disabled>\n            {placeholder}\n          </option>\n        )}\n        {options.map((opt) => (\n          <option key={opt.value} value={opt.value}>\n            {opt.label}\n          </option>\n        ))}\n      </select>\n      <ChevronDown className=\"pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400\" />\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A styled native HTML select element with consistent design system integration."
+  }
+}

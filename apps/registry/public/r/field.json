@@ -1,0 +1,15 @@
+{
+  "name": "field",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/field.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\n\nexport interface FieldProps {\n  label?: string;\n  description?: string;\n  error?: string;\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function Field({\n  label,\n  description,\n  error,\n  children,\n  className,\n}: FieldProps) {\n  return (\n    <div className={cn(\"space-y-2\", className)}>\n      {label && (\n        <label className=\"text-sm font-medium leading-none text-gray-700\">\n          {label}\n        </label>\n      )}\n      {children}\n      {description && !error && (\n        <p className=\"text-sm text-gray-500\">{description}</p>\n      )}\n      {error && <p className=\"text-sm text-red-600\">{error}</p>}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Combine labels, controls, and help text to compose accessible form fields."
+  }
+}

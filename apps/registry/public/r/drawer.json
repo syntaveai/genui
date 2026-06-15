@@ -1,0 +1,15 @@
+{
+  "name": "drawer",
+  "type": "registry:ui",
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/drawer.tsx",
+      "content": "\"use client\";\n\nimport {\n  useCallback,\n  useEffect,\n  useRef,\n  createContext,\n  useContext,\n} from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { X } from \"lucide-react\";\n\ninterface DrawerContextValue {\n  open: boolean;\n  onOpenChange: (open: boolean) => void;\n}\n\nconst DrawerContext = createContext<DrawerContextValue>({\n  open: false,\n  onOpenChange: () => {},\n});\n\nexport interface DrawerProps {\n  open?: boolean;\n  onOpenChange?: (open: boolean) => void;\n  children?: React.ReactNode;\n}\n\nexport function Drawer({ open = false, onOpenChange, children }: DrawerProps) {\n  return (\n    <DrawerContext.Provider\n      value={{ open, onOpenChange: onOpenChange ?? (() => {}) }}\n    >\n      {children}\n    </DrawerContext.Provider>\n  );\n}\n\nexport function DrawerTrigger({\n  children,\n  className,\n  ...props\n}: React.ButtonHTMLAttributes<HTMLButtonElement>) {\n  const { onOpenChange } = useContext(DrawerContext);\n  return (\n    <button onClick={() => onOpenChange(true)} className={className} {...props}>\n      {children}\n    </button>\n  );\n}\n\nexport function DrawerContent({\n  children,\n  className,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement>) {\n  const { open, onOpenChange } = useContext(DrawerContext);\n  const overlayRef = useRef<HTMLDivElement>(null);\n\n  const handleKeyDown = useCallback(\n    (e: KeyboardEvent) => {\n      if (e.key === \"Escape\") onOpenChange(false);\n    },\n    [onOpenChange],\n  );\n\n  useEffect(() => {\n    if (open) {\n      document.addEventListener(\"keydown\", handleKeyDown);\n      document.body.style.overflow = \"hidden\";\n    }\n    return () => {\n      document.removeEventListener(\"keydown\", handleKeyDown);\n      document.body.style.overflow = \"\";\n    };\n  }, [open, handleKeyDown]);\n\n  if (!open) return null;\n\n  return (\n    <div\n      ref={overlayRef}\n      className=\"fixed inset-0 z-50 bg-black/30\"\n      onClick={(e) => {\n        if (e.target === overlayRef.current) onOpenChange(false);\n      }}\n    >\n      <div\n        role=\"dialog\"\n        aria-modal=\"true\"\n        className={cn(\n          \"fixed inset-x-0 bottom-0 z-50 flex max-h-[85vh] flex-col rounded-t-xl border border-gray-200 bg-white shadow-sm\",\n          className,\n        )}\n        {...props}\n      >\n        <div className=\"mx-auto mt-3 h-1.5 w-12 rounded-full bg-gray-300\" />\n        <button\n          onClick={() => onOpenChange(false)}\n          className=\"absolute right-4 top-4 rounded-sm text-gray-500 hover:text-gray-900\"\n          aria-label=\"Close\"\n        >\n          <X className=\"h-4 w-4\" />\n        </button>\n        <div className=\"overflow-y-auto px-6 pb-6 pt-4\">{children}</div>\n      </div>\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A slide-up panel from the bottom of the screen with a drag handle."
+  }
+}

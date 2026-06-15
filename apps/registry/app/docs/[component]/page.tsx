@@ -17,6 +17,7 @@ import {
 import { CodeBlock } from "./code-block";
 import { SchemaView } from "./schema-view";
 import { ComponentDemo } from "./component-demo";
+import { Package, Terminal } from "lucide-react";
 
 interface Props {
   params: Promise<{ component: string }>;
@@ -238,33 +239,38 @@ export default async function ComponentDocPage({ params }: Props) {
   const schemas = SCHEMA_MAP[component];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div>
-        <div className="flex items-center gap-3">
-          <h1 className="font-inter text-3xl font-semibold tracking-tight text-gray-900">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-syntave-900 text-3xl font-semibold tracking-tight">
             {meta.label}
           </h1>
           {meta.isGenUI && (
-            <span className="rounded-full border border-gray-200 bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+            <span className="border-syntave-200 bg-syntave-50 text-syntave-600 rounded-full border px-3 py-0.5 text-xs font-semibold uppercase tracking-wider">
               GenUI
             </span>
           )}
         </div>
-        <p className="mt-2 text-gray-500">{description}</p>
+        <p className="text-syntave-500 mt-3 text-base leading-relaxed">
+          {description}
+        </p>
       </div>
 
       <ComponentDemo component={component} />
 
       {deps.length > 0 && (
-        <section className="space-y-3">
-          <h2 className="font-inter text-lg font-semibold text-gray-800">
-            Dependencies
-          </h2>
+        <section className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Package className="text-syntave-400 h-4 w-4" />
+            <h2 className="text-syntave-900 text-lg font-semibold">
+              Dependencies
+            </h2>
+          </div>
           <div className="flex flex-wrap gap-2">
             {deps.map((dep) => (
               <span
                 key={dep}
-                className="rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 font-mono text-xs text-gray-600"
+                className="border-syntave-200 bg-syntave-50 text-syntave-600 rounded-lg border px-3 py-1.5 font-mono text-xs font-medium"
               >
                 {dep}
               </span>
@@ -274,19 +280,17 @@ export default async function ComponentDocPage({ params }: Props) {
       )}
 
       {schemas && (
-        <section className="space-y-4">
-          <h2 className="font-inter text-lg font-semibold text-gray-800">
-            Schema
-          </h2>
+        <section className="space-y-5">
+          <h2 className="text-syntave-900 text-lg font-semibold">Schema</h2>
           <div className="grid gap-6">
             <div className="space-y-2">
-              <h3 className="font-inter text-sm font-medium text-gray-500">
+              <h3 className="text-syntave-500 text-sm font-medium">
                 LLM Schema (Intent)
               </h3>
               <SchemaView text={schemas.llm} />
             </div>
             <div className="space-y-2">
-              <h3 className="font-inter text-sm font-medium text-gray-500">
+              <h3 className="text-syntave-500 text-sm font-medium">
                 Props Schema (Resolved)
               </h3>
               <SchemaView text={schemas.props} />
@@ -296,28 +300,33 @@ export default async function ComponentDocPage({ params }: Props) {
       )}
 
       {!schemas && (
-        <section className="space-y-2">
-          <h2 className="font-inter text-lg font-semibold text-gray-800">
-            Props
-          </h2>
-          <p className="text-sm text-gray-500">
+        <section className="space-y-3">
+          <h2 className="text-syntave-900 text-lg font-semibold">Props</h2>
+          <p className="text-syntave-600 text-sm">
             This is a base primitive. It accepts standard HTML attributes plus{" "}
-            <code className="font-mono text-gray-800">className</code> for
-            styling via <code className="font-mono text-gray-800">cn()</code>.
+            <code className="bg-syntave-100 text-syntave-800 rounded px-1.5 py-0.5 font-mono text-xs">
+              className
+            </code>{" "}
+            for styling via{" "}
+            <code className="bg-syntave-100 text-syntave-800 rounded px-1.5 py-0.5 font-mono text-xs">
+              cn()
+            </code>
+            .
           </p>
         </section>
       )}
 
-      <section className="space-y-3">
-        <h2 className="font-inter text-lg font-semibold text-gray-800">
-          Source
-        </h2>
+      <section className="space-y-4">
+        <h2 className="text-syntave-900 text-lg font-semibold">Source</h2>
         <CodeBlock code={code} />
       </section>
 
-      <section className="space-y-3">
-        <h2 className="font-inter text-lg font-semibold text-gray-800">CLI</h2>
-        <pre className="overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 font-mono text-sm text-gray-800">
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Terminal className="text-syntave-400 h-4 w-4" />
+          <h2 className="text-syntave-900 text-lg font-semibold">CLI</h2>
+        </div>
+        <pre className="border-syntave-200 bg-syntave-950 text-syntave-200 overflow-x-auto rounded-xl border p-5 font-mono text-sm">
           npx genui add {component}
         </pre>
       </section>

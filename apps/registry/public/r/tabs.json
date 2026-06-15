@@ -1,0 +1,15 @@
+{
+  "name": "tabs",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/tabs.tsx",
+      "content": "\"use client\";\n\nimport { useState, createContext, useContext, useCallback } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\ninterface TabsContextValue {\n  value: string;\n  onValueChange: (value: string) => void;\n}\n\nconst TabsContext = createContext<TabsContextValue | null>(null);\n\nexport interface TabsProps {\n  defaultValue: string;\n  value?: string;\n  onValueChange?: (value: string) => void;\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function Tabs({\n  defaultValue,\n  value: controlledValue,\n  onValueChange,\n  children,\n  className,\n}: TabsProps) {\n  const [internalValue, setInternalValue] = useState(defaultValue);\n  const isControlled = controlledValue !== undefined;\n  const value = isControlled ? controlledValue : internalValue;\n\n  const handleChange = useCallback(\n    (newValue: string) => {\n      if (!isControlled) setInternalValue(newValue);\n      onValueChange?.(newValue);\n    },\n    [isControlled, onValueChange],\n  );\n\n  return (\n    <TabsContext.Provider value={{ value, onValueChange: handleChange }}>\n      <div className={cn(\"space-y-4\", className)}>{children}</div>\n    </TabsContext.Provider>\n  );\n}\n\nexport function TabsList({\n  children,\n  className,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement>) {\n  return (\n    <div\n      role=\"tablist\"\n      className={cn(\n        \"inline-flex h-10 items-center rounded-lg border border-gray-200 bg-gray-100 p-1\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </div>\n  );\n}\n\nexport function TabsTrigger({\n  value,\n  children,\n  className,\n  ...props\n}: React.ButtonHTMLAttributes<HTMLButtonElement> & { value: string }) {\n  const ctx = useContext(TabsContext);\n  const isActive = ctx?.value === value;\n\n  return (\n    <button\n      role=\"tab\"\n      aria-selected={isActive}\n      onClick={() => ctx?.onValueChange(value)}\n      className={cn(\n        \"inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all\",\n        isActive\n          ? \"bg-white text-gray-900 shadow-sm\"\n          : \"text-gray-500 hover:text-gray-700\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </button>\n  );\n}\n\nexport function TabsContent({\n  value,\n  children,\n  className,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement> & { value: string }) {\n  const ctx = useContext(TabsContext);\n  if (ctx?.value !== value) return null;\n\n  return (\n    <div role=\"tabpanel\" className={cn(\"mt-2\", className)} {...props}>\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A set of layered sections of content displayed one at a time via tab triggers."
+  }
+}

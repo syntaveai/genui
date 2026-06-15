@@ -1,0 +1,15 @@
+{
+  "name": "navigation-menu",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/navigation-menu.tsx",
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface NavItem {\n  label: string;\n  href?: string;\n  children?: { label: string; href: string }[];\n}\n\nexport interface NavigationMenuProps {\n  items: NavItem[];\n  className?: string;\n}\n\nexport function NavigationMenu({ items, className }: NavigationMenuProps) {\n  const [active, setActive] = useState<string | null>(null);\n\n  return (\n    <nav className={cn(\"flex items-center gap-1\", className)}>\n      {items.map((item) => (\n        <div\n          key={item.label}\n          className=\"relative\"\n          onMouseEnter={() => setActive(item.label)}\n          onMouseLeave={() => setActive(null)}\n        >\n          {item.href ? (\n            <a\n              href={item.href}\n              className=\"rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900\"\n            >\n              {item.label}\n            </a>\n          ) : (\n            <button className=\"rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900\">\n              {item.label}\n            </button>\n          )}\n          {item.children && active === item.label && (\n            <div className=\"absolute left-0 top-full z-50 mt-1 min-w-[12rem] rounded-lg border border-gray-200 bg-white py-2 shadow-sm\">\n              {item.children.map((child) => (\n                <a\n                  key={child.label}\n                  href={child.href}\n                  className=\"block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100\"\n                >\n                  {child.label}\n                </a>\n              ))}\n            </div>\n          )}\n        </div>\n      ))}\n    </nav>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A collection of links for navigating websites."
+  }
+}

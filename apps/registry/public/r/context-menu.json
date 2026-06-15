@@ -1,0 +1,15 @@
+{
+  "name": "context-menu",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/context-menu.tsx",
+      "content": "\"use client\";\n\nimport { useState, useRef, useEffect } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface ContextMenuProps {\n  items: {\n    label: string;\n    onClick: () => void;\n    disabled?: boolean;\n    separator?: boolean;\n  }[];\n  children: React.ReactNode;\n  className?: string;\n}\n\nexport function ContextMenu({ items, children, className }: ContextMenuProps) {\n  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);\n  const ref = useRef<HTMLDivElement>(null);\n\n  useEffect(() => {\n    const h = () => setPos(null);\n    if (pos) document.addEventListener(\"mousedown\", h);\n    return () => document.removeEventListener(\"mousedown\", h);\n  }, [pos]);\n\n  return (\n    <div\n      className={className}\n      onContextMenu={(e) => {\n        e.preventDefault();\n        setPos({ x: e.clientX, y: e.clientY });\n      }}\n    >\n      {children}\n      {pos && (\n        <div\n          ref={ref}\n          style={{ left: pos.x, top: pos.y }}\n          className=\"fixed z-50 min-w-[10rem] rounded-lg border border-gray-200 bg-white py-1 shadow-sm\"\n        >\n          {items.map((item, i) =>\n            item.separator ? (\n              <div key={i} className=\"my-1 border-t border-gray-200\" />\n            ) : (\n              <button\n                key={i}\n                onClick={() => {\n                  item.onClick();\n                  setPos(null);\n                }}\n                disabled={item.disabled}\n                className=\"flex w-full items-center px-3 py-1.5 text-left text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50\"\n              >\n                {item.label}\n              </button>\n            ),\n          )}\n        </div>\n      )}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Displays a menu of actions triggered by a right click."
+  }
+}

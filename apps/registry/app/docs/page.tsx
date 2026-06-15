@@ -1,29 +1,79 @@
 import Link from "next/link";
+import { ArrowRight, Boxes, Shield, Workflow, Terminal } from "lucide-react";
 
 export default function DocsIntroductionPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <div>
-        <h1 className="font-inter text-3xl font-semibold tracking-tight text-gray-900">
+        <h1 className="text-syntave-900 text-3xl font-semibold tracking-tight">
           Introduction
         </h1>
-        <p className="mt-2 text-gray-500">
+        <p className="text-syntave-500 mt-3 text-base leading-relaxed">
           Syntave GenUI is a Generative UI framework that lets LLMs render real,
           type-safe React components through a registry-driven model.
         </p>
       </div>
 
+      <section className="grid gap-4 sm:grid-cols-2">
+        <div className="border-syntave-200 hover:border-syntave-300 rounded-2xl border bg-white p-6 transition-all hover:shadow-sm">
+          <div className="border-syntave-200 bg-syntave-50 text-syntave-700 flex h-10 w-10 items-center justify-center rounded-lg border">
+            <Workflow className="h-5 w-5" />
+          </div>
+          <h3 className="text-syntave-900 mt-4 text-sm font-semibold">
+            Registry-driven
+          </h3>
+          <p className="text-syntave-500 mt-2 text-sm leading-relaxed">
+            Components live in your project as local source code — downloaded
+            via the CLI, owned by you, and fully customizable.
+          </p>
+        </div>
+        <div className="border-syntave-200 hover:border-syntave-300 rounded-2xl border bg-white p-6 transition-all hover:shadow-sm">
+          <div className="border-syntave-200 bg-syntave-50 text-syntave-700 flex h-10 w-10 items-center justify-center rounded-lg border">
+            <Shield className="h-5 w-5" />
+          </div>
+          <h3 className="text-syntave-900 mt-4 text-sm font-semibold">
+            Type-safe
+          </h3>
+          <p className="text-syntave-500 mt-2 text-sm leading-relaxed">
+            Zod schemas validate LLM output at every boundary. No runtime
+            surprises, no hallucinated props.
+          </p>
+        </div>
+        <div className="border-syntave-200 hover:border-syntave-300 rounded-2xl border bg-white p-6 transition-all hover:shadow-sm">
+          <div className="border-syntave-200 bg-syntave-50 text-syntave-700 flex h-10 w-10 items-center justify-center rounded-lg border">
+            <Boxes className="h-5 w-5" />
+          </div>
+          <h3 className="text-syntave-900 mt-4 text-sm font-semibold">
+            57 Components
+          </h3>
+          <p className="text-syntave-500 mt-2 text-sm leading-relaxed">
+            5 GenUI components with LLM schemas and 44 base primitives. All
+            monochrome, accessible, and tested.
+          </p>
+        </div>
+        <div className="border-syntave-200 hover:border-syntave-300 rounded-2xl border bg-white p-6 transition-all hover:shadow-sm">
+          <div className="border-syntave-200 bg-syntave-50 text-syntave-700 flex h-10 w-10 items-center justify-center rounded-lg border">
+            <Terminal className="h-5 w-5" />
+          </div>
+          <h3 className="text-syntave-900 mt-4 text-sm font-semibold">
+            CLI First
+          </h3>
+          <p className="text-syntave-500 mt-2 text-sm leading-relaxed">
+            Install components with a single command. The CLI generates typed
+            component maps automatically.
+          </p>
+        </div>
+      </section>
+
       <section className="space-y-4">
-        <h2 className="font-inter text-xl font-semibold text-gray-800">
-          How it works
-        </h2>
-        <div className="space-y-3 text-sm leading-relaxed text-gray-600">
+        <h2 className="text-syntave-900 text-xl font-semibold">How it works</h2>
+        <div className="text-syntave-600 space-y-3 text-sm leading-relaxed">
           <p>
             The LLM outputs a structured JSON payload describing the UI it wants
             to render. The backend resolver validates data source references
             against an allowlist, injects real data, and hands the resolved
             payload to the{" "}
-            <code className="font-mono text-gray-800">
+            <code className="bg-syntave-100 text-syntave-800 rounded px-1.5 py-0.5 font-mono text-xs">
               &lt;GenerativeUI /&gt;
             </code>{" "}
             mapper.
@@ -37,35 +87,62 @@ export default function DocsIntroductionPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="font-inter text-xl font-semibold text-gray-800">
-          Architecture
-        </h2>
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 font-mono text-xs leading-loose text-gray-700">
-          <div>User Prompt</div>
-          <div className="pl-4 text-gray-400">&darr;</div>
-          <div className="pl-4">LLM outputs Intent (LLMSchema)</div>
-          <div className="pl-4 text-gray-400">&darr;</div>
-          <div className="pl-4">Backend Resolver validates + injects data</div>
-          <div className="pl-4 text-gray-400">&darr;</div>
-          <div className="pl-4">
-            &lt;GenerativeUI /&gt; maps type to component
+        <h2 className="text-syntave-900 text-xl font-semibold">Architecture</h2>
+        <div className="border-syntave-200 bg-syntave-950 text-syntave-300 overflow-hidden rounded-2xl border p-6 font-mono text-xs leading-loose">
+          <div className="flex items-center gap-3">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold text-white">
+              1
+            </span>
+            <span>User Prompt</span>
           </div>
-          <div className="pl-4 text-gray-400">&darr;</div>
-          <div className="pl-4">React Component renders</div>
+          <div className="text-syntave-500 ml-3 h-6 border-l border-white/10 pl-3">
+            &darr;
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold text-white">
+              2
+            </span>
+            <span>LLM outputs Intent (LLMSchema)</span>
+          </div>
+          <div className="text-syntave-500 ml-3 h-6 border-l border-white/10 pl-3">
+            &darr;
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold text-white">
+              3
+            </span>
+            <span>Backend Resolver validates + injects data</span>
+          </div>
+          <div className="text-syntave-500 ml-3 h-6 border-l border-white/10 pl-3">
+            &darr;
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold text-white">
+              4
+            </span>
+            <span>&lt;GenerativeUI /&gt; maps type to component</span>
+          </div>
+          <div className="text-syntave-500 ml-3 h-6 border-l border-white/10 pl-3">
+            &darr;
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold text-white">
+              5
+            </span>
+            <span>React Component renders</span>
+          </div>
         </div>
       </section>
 
       <section className="space-y-4">
-        <h2 className="font-inter text-xl font-semibold text-gray-800">
-          Quick start
-        </h2>
-        <div className="space-y-3 text-sm leading-relaxed text-gray-600">
+        <h2 className="text-syntave-900 text-xl font-semibold">Quick start</h2>
+        <div className="text-syntave-600 space-y-3 text-sm leading-relaxed">
           <p>Install a GenUI component in your Next.js project:</p>
-          <pre className="overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 font-mono text-sm text-gray-800">
+          <pre className="border-syntave-200 bg-syntave-950 text-syntave-200 overflow-x-auto rounded-xl border p-5 font-mono text-sm">
             npx genui add metric-card
           </pre>
           <p>Create a component map and render:</p>
-          <pre className="overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 font-mono text-sm text-gray-800">
+          <pre className="border-syntave-200 bg-syntave-950 text-syntave-200 overflow-x-auto rounded-xl border p-5 font-mono text-sm">
             {`import { GenerativeUI } from "@syntave/runtime";
 import { componentMap } from "@/components/genui";
 
@@ -76,9 +153,10 @@ import { componentMap } from "@/components/genui";
           </pre>
           <Link
             href="/docs/installation"
-            className="inline-block rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+            className="bg-syntave-950 hover:bg-syntave-800 group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-all"
           >
             Read installation guide
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
       </section>

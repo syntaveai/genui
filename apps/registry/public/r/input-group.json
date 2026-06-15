@@ -1,0 +1,15 @@
+{
+  "name": "input-group",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/input-group.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\n\nexport interface InputGroupProps {\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function InputGroup({ children, className }: InputGroupProps) {\n  return (\n    <div\n      className={cn(\n        \"flex items-center [&>:first-child]:rounded-r-none [&>:last-child]:rounded-l-none [&>:not(:first-child):not(:last-child)]:rounded-none [&>:not(:first-child)]:-ml-px\",\n        className,\n      )}\n    >\n      {children}\n    </div>\n  );\n}\n\nexport function InputGroupAddon({\n  children,\n  className,\n}: {\n  children?: React.ReactNode;\n  className?: string;\n}) {\n  return (\n    <div\n      className={cn(\n        \"inline-flex items-center border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-500\",\n        className,\n      )}\n    >\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Add addons, buttons, and helper content to inputs."
+  }
+}

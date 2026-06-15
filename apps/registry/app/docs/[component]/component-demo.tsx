@@ -599,9 +599,9 @@ export function ComponentDemo({ component }: { component: string }) {
   if (!render) return null;
 
   return (
-    <section className="space-y-3">
-      <h2 className="font-inter text-lg font-semibold text-gray-800">Demo</h2>
-      <div className="rounded-lg border border-gray-200 bg-white p-6">
+    <section className="space-y-4">
+      <h2 className="text-syntave-900 text-lg font-semibold">Demo</h2>
+      <div className="border-syntave-200 rounded-2xl border bg-white p-8">
         {render()}
       </div>
     </section>

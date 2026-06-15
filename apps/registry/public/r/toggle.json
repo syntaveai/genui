@@ -1,0 +1,15 @@
+{
+  "name": "toggle",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/toggle.tsx",
+      "content": "\"use client\";\n\nimport { useState, useCallback } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface ToggleProps {\n  pressed?: boolean;\n  defaultPressed?: boolean;\n  onPressedChange?: (pressed: boolean) => void;\n  disabled?: boolean;\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function Toggle({\n  pressed: controlledPressed,\n  defaultPressed = false,\n  onPressedChange,\n  disabled,\n  children,\n  className,\n}: ToggleProps) {\n  const [internalPressed, setInternalPressed] = useState(defaultPressed);\n  const isControlled = controlledPressed !== undefined;\n  const pressed = isControlled ? controlledPressed : internalPressed;\n\n  const handleClick = useCallback(() => {\n    if (disabled) return;\n    const next = !pressed;\n    if (!isControlled) setInternalPressed(next);\n    onPressedChange?.(next);\n  }, [pressed, disabled, isControlled, onPressedChange]);\n\n  return (\n    <button\n      type=\"button\"\n      aria-pressed={pressed}\n      disabled={disabled}\n      onClick={handleClick}\n      className={cn(\n        \"inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 disabled:pointer-events-none disabled:opacity-50\",\n        pressed\n          ? \"bg-gray-200 text-gray-900\"\n          : \"bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-700\",\n        className,\n      )}\n    >\n      {children}\n    </button>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A two-state button that can be either on or off."
+  }
+}

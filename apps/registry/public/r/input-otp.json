@@ -1,0 +1,15 @@
+{
+  "name": "input-otp",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/input-otp.tsx",
+      "content": "\"use client\";\n\nimport {\n  useRef,\n  useCallback,\n  type ClipboardEvent,\n  type KeyboardEvent,\n} from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface InputOTPProps {\n  value?: string;\n  onChange?: (value: string) => void;\n  maxLength?: number;\n  className?: string;\n}\n\nexport function InputOTP({\n  value = \"\",\n  onChange,\n  maxLength = 6,\n  className,\n}: InputOTPProps) {\n  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);\n\n  const focus = useCallback((index: number) => {\n    inputRefs.current[index]?.focus();\n  }, []);\n\n  const handleKeyDown = useCallback(\n    (e: KeyboardEvent<HTMLInputElement>, index: number) => {\n      if (e.key === \"Backspace\" && !value[index] && index > 0) {\n        focus(index - 1);\n      } else if (e.key === \"ArrowLeft\" && index > 0) {\n        focus(index - 1);\n      } else if (e.key === \"ArrowRight\" && index < maxLength - 1) {\n        focus(index + 1);\n      }\n    },\n    [value, maxLength, focus],\n  );\n\n  const handleChange = useCallback(\n    (val: string, index: number) => {\n      const digits = value.split(\"\");\n      digits[index] = val.slice(-1);\n      const next = digits.join(\"\").slice(0, maxLength);\n      onChange?.(next);\n      if (val && index < maxLength - 1) focus(index + 1);\n    },\n    [value, maxLength, onChange, focus],\n  );\n\n  const handlePaste = useCallback(\n    (e: ClipboardEvent) => {\n      e.preventDefault();\n      const data = e.clipboardData\n        .getData(\"text\")\n        .replace(/\\D/g, \"\")\n        .slice(0, maxLength);\n      onChange?.(data);\n      focus(Math.min(data.length, maxLength - 1));\n    },\n    [maxLength, onChange, focus],\n  );\n\n  return (\n    <div className={cn(\"flex items-center gap-2\", className)}>\n      {Array.from({ length: maxLength }).map((_, i) => (\n        <input\n          key={i}\n          ref={(el) => {\n            inputRefs.current[i] = el;\n          }}\n          type=\"text\"\n          inputMode=\"numeric\"\n          maxLength={1}\n          value={value[i] ?? \"\"}\n          onChange={(e) => handleChange(e.target.value, i)}\n          onKeyDown={(e) => handleKeyDown(e, i)}\n          onPaste={handlePaste}\n          className=\"flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 text-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-400\"\n          aria-label={`Digit ${i + 1}`}\n        />\n      ))}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Accessible one-time password component with copy-paste functionality."
+  }
+}

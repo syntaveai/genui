@@ -1,0 +1,15 @@
+{
+  "name": "collapsible",
+  "type": "registry:ui",
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/collapsible.tsx",
+      "content": "\"use client\";\n\nimport { useState, useCallback } from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { ChevronDown } from \"lucide-react\";\n\nexport interface CollapsibleProps {\n  defaultOpen?: boolean;\n  open?: boolean;\n  onOpenChange?: (open: boolean) => void;\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function Collapsible({\n  defaultOpen = false,\n  open: controlledOpen,\n  onOpenChange,\n  children,\n  className,\n}: CollapsibleProps) {\n  const [internalOpen, setInternalOpen] = useState(defaultOpen);\n  const isControlled = controlledOpen !== undefined;\n  const open = isControlled ? controlledOpen : internalOpen;\n\n  const handleToggle = useCallback(() => {\n    const next = !open;\n    if (!isControlled) setInternalOpen(next);\n    onOpenChange?.(next);\n  }, [open, isControlled, onOpenChange]);\n\n  return (\n    <CollapsibleContext.Provider value={{ open, onToggle: handleToggle }}>\n      <div className={cn(\"space-y-1\", className)}>{children}</div>\n    </CollapsibleContext.Provider>\n  );\n}\n\nimport { createContext, useContext } from \"react\";\n\ninterface CollapsibleContextValue {\n  open: boolean;\n  onToggle: () => void;\n}\n\nconst CollapsibleContext = createContext<CollapsibleContextValue>({\n  open: false,\n  onToggle: () => {},\n});\n\nexport function CollapsibleTrigger({\n  children,\n  className,\n  ...props\n}: React.ButtonHTMLAttributes<HTMLButtonElement>) {\n  const { onToggle } = useContext(CollapsibleContext);\n  return (\n    <button\n      type=\"button\"\n      onClick={onToggle}\n      className={cn(\n        \"flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600\",\n        className,\n      )}\n      {...props}\n    >\n      <ChevronDown className=\"h-4 w-4 text-gray-500\" />\n      {children}\n    </button>\n  );\n}\n\nexport function CollapsibleContent({\n  children,\n  className,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement>) {\n  const { open } = useContext(CollapsibleContext);\n  if (!open) return null;\n\n  return (\n    <div className={cn(\"pl-6 text-sm text-gray-600\", className)} {...props}>\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "An interactive component which expands/collapses a panel."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "accordion",
+  "type": "registry:ui",
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/accordion.tsx",
+      "content": "\"use client\";\n\nimport { useState, createContext, useContext, useCallback } from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { ChevronDown } from \"lucide-react\";\n\ninterface AccordionContextValue {\n  expanded: string | null;\n  setExpanded: (value: string | null) => void;\n}\n\nconst AccordionContext = createContext<AccordionContextValue | null>(null);\n\nexport interface AccordionProps {\n  defaultValue?: string;\n  type?: \"single\" | \"multiple\";\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function Accordion({\n  defaultValue,\n  type = \"single\",\n  children,\n  className,\n}: AccordionProps) {\n  const [expanded, setExpanded] = useState<string | null>(defaultValue ?? null);\n\n  return (\n    <AccordionContext.Provider value={{ expanded, setExpanded }}>\n      <div className={cn(\"divide-y divide-gray-200\", className)}>\n        {children}\n      </div>\n    </AccordionContext.Provider>\n  );\n}\n\nexport function AccordionItem({\n  value,\n  children,\n  className,\n}: {\n  value: string;\n  children?: React.ReactNode;\n  className?: string;\n}) {\n  return (\n    <div className={cn(\"py-1\", className)} data-value={value}>\n      {children}\n    </div>\n  );\n}\n\nexport function AccordionTrigger({\n  value,\n  children,\n  className,\n}: {\n  value: string;\n  children?: React.ReactNode;\n  className?: string;\n}) {\n  const ctx = useContext(AccordionContext);\n  const isExpanded = ctx?.expanded === value;\n\n  const handleClick = useCallback(() => {\n    ctx?.setExpanded(isExpanded ? null : value);\n  }, [ctx, isExpanded, value]);\n\n  return (\n    <button\n      onClick={handleClick}\n      className={cn(\n        \"flex w-full items-center justify-between py-3 text-sm font-medium text-gray-900 transition-colors hover:text-gray-600\",\n        className,\n      )}\n    >\n      {children}\n      <ChevronDown\n        className={cn(\n          \"h-4 w-4 shrink-0 text-gray-500 transition-transform duration-200\",\n          isExpanded && \"rotate-180\",\n        )}\n      />\n    </button>\n  );\n}\n\nexport function AccordionContent({\n  value,\n  children,\n  className,\n}: {\n  value: string;\n  children?: React.ReactNode;\n  className?: string;\n}) {\n  const ctx = useContext(AccordionContext);\n  if (ctx?.expanded !== value) return null;\n\n  return (\n    <div className={cn(\"pb-3 text-sm text-gray-600\", className)}>\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A vertically stacked set of interactive headings that each reveal a section of content."
+  }
+}

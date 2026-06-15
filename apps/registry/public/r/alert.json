@@ -1,0 +1,15 @@
+{
+  "name": "alert",
+  "type": "registry:ui",
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/alert.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { Text } from \"./text\";\nimport { AlertCircle, Info, AlertTriangle, CheckCircle2 } from \"lucide-react\";\n\nconst variantConfig = {\n  info: {\n    container: \"border-blue-200 bg-blue-50\",\n    icon: \"text-blue-600\",\n    Icon: Info,\n  },\n  success: {\n    container: \"border-green-200 bg-green-50\",\n    icon: \"text-green-600\",\n    Icon: CheckCircle2,\n  },\n  warning: {\n    container: \"border-amber-200 bg-amber-50\",\n    icon: \"text-amber-600\",\n    Icon: AlertTriangle,\n  },\n  error: {\n    container: \"border-red-200 bg-red-50\",\n    icon: \"text-red-600\",\n    Icon: AlertCircle,\n  },\n};\n\nexport interface AlertProps {\n  variant?: keyof typeof variantConfig;\n  title?: string;\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function Alert({\n  variant = \"info\",\n  title,\n  children,\n  className,\n}: AlertProps) {\n  const cfg = variantConfig[variant];\n  const { Icon: IconComponent } = cfg;\n\n  return (\n    <div\n      role=\"alert\"\n      className={cn(\n        \"flex gap-3 rounded-lg border p-4\",\n        cfg.container,\n        className,\n      )}\n    >\n      <IconComponent className={cn(\"mt-0.5 h-5 w-5 shrink-0\", cfg.icon)} />\n      <div className=\"space-y-1\">\n        {title && (\n          <Text variant=\"body\" className=\"font-semibold text-gray-900\">\n            {title}\n          </Text>\n        )}\n        {children && (\n          <Text variant=\"muted\" className=\"text-sm\">\n            {children}\n          </Text>\n        )}\n      </div>\n    </div>\n  );\n}\n\nexport function AlertTitle({\n  children,\n  className,\n}: {\n  children: React.ReactNode;\n  className?: string;\n}) {\n  return (\n    <Text\n      variant=\"body\"\n      className={cn(\"font-semibold text-gray-900\", className)}\n    >\n      {children}\n    </Text>\n  );\n}\n\nexport function AlertDescription({\n  children,\n  className,\n}: {\n  children: React.ReactNode;\n  className?: string;\n}) {\n  return (\n    <Text variant=\"muted\" className={cn(\"text-sm\", className)}>\n      {children}\n    </Text>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A callout for user attention with info, success, warning, and error variants."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "radio-group",
+  "type": "registry:ui",
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/radio-group.tsx",
+      "content": "\"use client\";\n\nimport { createContext, useContext, useCallback } from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { Circle } from \"lucide-react\";\n\ninterface RadioContextValue {\n  value: string;\n  onValueChange: (value: string) => void;\n}\n\nconst RadioContext = createContext<RadioContextValue | null>(null);\n\nexport interface RadioGroupProps {\n  value?: string;\n  defaultValue?: string;\n  onValueChange?: (value: string) => void;\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function RadioGroup({\n  value: controlledValue,\n  defaultValue,\n  onValueChange,\n  children,\n  className,\n}: RadioGroupProps) {\n  const value = controlledValue ?? defaultValue ?? \"\";\n  return (\n    <RadioContext.Provider\n      value={{ value, onValueChange: onValueChange ?? (() => {}) }}\n    >\n      <div role=\"radiogroup\" className={cn(\"space-y-2\", className)}>\n        {children}\n      </div>\n    </RadioContext.Provider>\n  );\n}\n\nexport function RadioGroupItem({\n  value,\n  children,\n  className,\n  ...props\n}: React.ButtonHTMLAttributes<HTMLButtonElement> & { value: string }) {\n  const ctx = useContext(RadioContext);\n  const checked = ctx?.value === value;\n\n  const handleClick = useCallback(() => {\n    ctx?.onValueChange(value);\n  }, [ctx, value]);\n\n  return (\n    <label\n      className={cn(\n        \"flex cursor-pointer items-center gap-2 text-sm text-gray-700\",\n        className,\n      )}\n    >\n      <button\n        role=\"radio\"\n        aria-checked={checked}\n        onClick={handleClick}\n        className={cn(\n          \"flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400\",\n          checked && \"border-gray-900\",\n        )}\n        {...props}\n      >\n        {checked && (\n          <Circle className=\"h-2.5 w-2.5 fill-gray-900 text-gray-900\" />\n        )}\n      </button>\n      {children}\n    </label>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A set of checkable radio buttons where no more than one can be checked."
+  }
+}

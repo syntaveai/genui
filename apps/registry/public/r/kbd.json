@@ -1,0 +1,15 @@
+{
+  "name": "kbd",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/kbd.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\n\nexport interface KbdProps extends React.HTMLAttributes<HTMLElement> {\n  keys: string[];\n}\n\nexport function Kbd({ keys, className, ...props }: KbdProps) {\n  return (\n    <kbd\n      className={cn(\n        \"inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 px-1.5 py-0.5 font-mono text-xs text-gray-600\",\n        className,\n      )}\n      {...props}\n    >\n      {keys.map((key, i) => (\n        <span key={i}>\n          {i > 0 && <span className=\"mx-0.5 text-gray-300\">+</span>}\n          <span className=\"uppercase\">{key}</span>\n        </span>\n      ))}\n    </kbd>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Used to display textual user input from keyboard."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "pagination",
+  "type": "registry:ui",
+  "dependencies": ["lucide-react", "clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/pagination.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport { ChevronLeft, ChevronRight } from \"lucide-react\";\n\nexport interface PaginationProps {\n  currentPage: number;\n  totalPages: number;\n  onPageChange: (page: number) => void;\n  className?: string;\n}\n\nexport function Pagination({\n  currentPage,\n  totalPages,\n  onPageChange,\n  className,\n}: PaginationProps) {\n  const pages: (number | \"...\")[] = [];\n  for (let i = 1; i <= totalPages; i++) {\n    if (\n      i === 1 ||\n      i === totalPages ||\n      (i >= currentPage - 1 && i <= currentPage + 1)\n    ) {\n      pages.push(i);\n    } else if (pages[pages.length - 1] !== \"...\") {\n      pages.push(\"...\");\n    }\n  }\n\n  return (\n    <nav\n      aria-label=\"Pagination\"\n      className={cn(\"flex items-center gap-1\", className)}\n    >\n      <button\n        onClick={() => onPageChange(currentPage - 1)}\n        disabled={currentPage <= 1}\n        className=\"inline-flex h-8 w-8 items-center justify-center rounded-md text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-50\"\n        aria-label=\"Previous page\"\n      >\n        <ChevronLeft className=\"h-4 w-4\" />\n      </button>\n      {pages.map((page, i) =>\n        page === \"...\" ? (\n          <span\n            key={`e${i}`}\n            className=\"flex h-8 w-8 items-center justify-center text-sm text-gray-400\"\n          >\n            ...\n          </span>\n        ) : (\n          <button\n            key={page}\n            onClick={() => onPageChange(page)}\n            className={cn(\n              \"inline-flex h-8 w-8 items-center justify-center rounded-md text-sm transition-colors\",\n              page === currentPage\n                ? \"bg-gray-900 text-white\"\n                : \"text-gray-600 hover:bg-gray-100\",\n            )}\n          >\n            {page}\n          </button>\n        ),\n      )}\n      <button\n        onClick={() => onPageChange(currentPage + 1)}\n        disabled={currentPage >= totalPages}\n        className=\"inline-flex h-8 w-8 items-center justify-center rounded-md text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-50\"\n        aria-label=\"Next page\"\n      >\n        <ChevronRight className=\"h-4 w-4\" />\n      </button>\n    </nav>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Pagination with page navigation, next and previous links."
+  }
+}

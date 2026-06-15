@@ -1,0 +1,15 @@
+{
+  "name": "button-group",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/button-group.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\n\nexport interface ButtonGroupProps {\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function ButtonGroup({ children, className }: ButtonGroupProps) {\n  return (\n    <div\n      className={cn(\n        \"inline-flex items-center [&>:first-child]:rounded-r-none [&>:last-child]:rounded-l-none [&>:not(:first-child):not(:last-child)]:rounded-none [&>:not(:first-child)]:-ml-px\",\n        className,\n      )}\n    >\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A container that groups related buttons together with consistent styling."
+  }
+}

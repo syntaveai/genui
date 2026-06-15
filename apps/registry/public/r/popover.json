@@ -1,0 +1,15 @@
+{
+  "name": "popover",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/popover.tsx",
+      "content": "\"use client\";\n\nimport {\n  useState,\n  useRef,\n  useEffect,\n  createContext,\n  useContext,\n  useCallback,\n} from \"react\";\nimport { cn } from \"@/lib/utils\";\n\ninterface PopoverContextValue {\n  open: boolean;\n  setOpen: (open: boolean) => void;\n}\n\nconst PopoverCtx = createContext<PopoverContextValue>({\n  open: false,\n  setOpen: () => {},\n});\n\nexport interface PopoverProps {\n  children?: React.ReactNode;\n  className?: string;\n}\n\nexport function Popover({ children, className }: PopoverProps) {\n  const [open, setOpen] = useState(false);\n  const ref = useRef<HTMLDivElement>(null);\n\n  useEffect(() => {\n    const handleClickOutside = (e: MouseEvent) => {\n      if (ref.current && !ref.current.contains(e.target as Node)) {\n        setOpen(false);\n      }\n    };\n    if (open) document.addEventListener(\"mousedown\", handleClickOutside);\n    return () => document.removeEventListener(\"mousedown\", handleClickOutside);\n  }, [open]);\n\n  return (\n    <PopoverCtx.Provider value={{ open, setOpen }}>\n      <div ref={ref} className={cn(\"relative inline-flex\", className)}>\n        {children}\n      </div>\n    </PopoverCtx.Provider>\n  );\n}\n\nexport function PopoverTrigger({\n  children,\n  className,\n  ...props\n}: React.ButtonHTMLAttributes<HTMLButtonElement>) {\n  const { open, setOpen } = useContext(PopoverCtx);\n  return (\n    <button\n      type=\"button\"\n      onClick={() => setOpen(!open)}\n      className={className}\n      {...props}\n    >\n      {children}\n    </button>\n  );\n}\n\nexport function PopoverContent({\n  children,\n  className,\n  align = \"center\",\n  ...props\n}: React.HTMLAttributes<HTMLDivElement> & {\n  align?: \"start\" | \"center\" | \"end\";\n}) {\n  const { open } = useContext(PopoverCtx);\n\n  if (!open) return null;\n\n  const alignClass =\n    align === \"start\"\n      ? \"left-0\"\n      : align === \"end\"\n        ? \"right-0\"\n        : \"left-1/2 -translate-x-1/2\";\n\n  return (\n    <div\n      className={cn(\n        \"absolute top-full z-50 mt-2 min-w-[12rem] rounded-lg border border-gray-200 bg-white p-4 shadow-sm\",\n        alignClass,\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "Displays rich content in a portal, triggered by a button."
+  }
+}

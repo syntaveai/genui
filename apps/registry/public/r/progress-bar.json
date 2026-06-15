@@ -1,0 +1,52 @@
+{
+  "name": "progress-bar",
+  "type": "registry:ui",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "files": [
+    {
+      "path": "ui/progress-bar.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { Text } from \"./text\";\n\nexport interface ProgressBarProps {\n  label: string;\n  value: number;\n  maxValue?: number;\n  isEmpty?: boolean;\n  fallbackMessage?: string;\n  className?: string;\n}\n\nexport function ProgressBar({\n  label,\n  value,\n  maxValue = 100,\n  isEmpty,\n  fallbackMessage,\n  className,\n}: ProgressBarProps) {\n  if (isEmpty) {\n    return (\n      <div\n        className={cn(\n          \"rounded-lg border border-dashed border-gray-200 bg-gray-50 p-6 text-center text-sm text-gray-500\",\n          className,\n        )}\n      >\n        {fallbackMessage || \"No progress data available.\"}\n      </div>\n    );\n  }\n\n  const pct = maxValue > 0 ? Math.min((value / maxValue) * 100, 100) : 0;\n\n  return (\n    <div className={cn(\"space-y-2\", className)}>\n      <div className=\"flex items-center justify-between\">\n        <Text variant=\"body\" className=\"font-medium\">\n          {label}\n        </Text>\n        <Text variant=\"muted\" className=\"text-sm\">\n          {value.toLocaleString()}\n          {` / `}\n          {maxValue.toLocaleString()}\n        </Text>\n      </div>\n      <div className=\"h-2.5 w-full overflow-hidden rounded-full bg-gray-200\">\n        <div\n          className=\"h-full rounded-full bg-gray-900 transition-all duration-500\"\n          style={{ width: `${pct}%` }}\n        />\n      </div>\n      <Text variant=\"muted\" className=\"text-right text-xs\">\n        {Math.round(pct)}%\n      </Text>\n    </div>\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "meta": {
+    "description": "A horizontal progress bar with label, value, and percentage display.",
+    "mcp_tool_definition": {
+      "name": "render_progress_bar",
+      "description": "Renders the progress-bar component.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "ProgressBar"
+          },
+          "props": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "description": "A short label describing the progress"
+              },
+              "dataSource": {
+                "type": "string",
+                "description": "The exact name of the registered data source to fetch progress data from. Must return { value: number, maxValue: number } or { value: number } where maxValue defaults to 100."
+              },
+              "dataSourceParams": {
+                "type": "object",
+                "additionalProperties": {},
+                "description": "Optional parameters to pass to the data source (e.g., { projectId: 'abc' })"
+              }
+            },
+            "required": ["label", "dataSource"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "props"],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  }
+}
