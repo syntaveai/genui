@@ -101,3 +101,21 @@ export { RadioGroup, RadioGroupItem } from "./radio-group";
 export type { RadioGroupProps } from "./radio-group";
 export { NativeSelect } from "./native-select";
 export type { NativeSelectProps } from "./native-select";
+
+// Batch 4
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "./dropdown-menu";
+export { Breadcrumb } from "./breadcrumb";
+export type { BreadcrumbProps } from "./breadcrumb";
+export { Pagination } from "./pagination";
+export type { PaginationProps } from "./pagination";
+export { Toggle } from "./toggle";
+export type { ToggleProps } from "./toggle";
+export { ToastProvider, toast, useToast } from "./toast";
+export { ScrollArea } from "./scroll-area";
+export type { ScrollAreaProps } from "./scroll-area";

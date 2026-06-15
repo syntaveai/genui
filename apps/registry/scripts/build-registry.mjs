@@ -200,6 +200,42 @@ const REGISTRY = [
     dependencies: ["lucide-react", "clsx", "tailwind-merge"],
     description: "A styled native HTML select element with consistent design system integration.",
   },
+  {
+    name: "toggle",
+    componentFile: "toggle.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "A two-state button that can be either on or off.",
+  },
+  {
+    name: "dropdown-menu",
+    componentFile: "dropdown-menu.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "Displays a menu of actions triggered by a button.",
+  },
+  {
+    name: "breadcrumb",
+    componentFile: "breadcrumb.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "Displays the path to the current resource using a hierarchy of links.",
+  },
+  {
+    name: "pagination",
+    componentFile: "pagination.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "Pagination with page navigation, next and previous links.",
+  },
+  {
+    name: "toast",
+    componentFile: "toast.tsx",
+    dependencies: ["lucide-react", "clsx", "tailwind-merge"],
+    description: "A succinct message that is displayed temporarily with auto-dismiss.",
+  },
+  {
+    name: "scroll-area",
+    componentFile: "scroll-area.tsx",
+    dependencies: ["clsx", "tailwind-merge"],
+    description: "Augments native scroll functionality for custom, cross-browser styling.",
+  },
 ];
 
 function readSource(filePath) {
