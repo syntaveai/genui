@@ -9,6 +9,10 @@ import {
   DataTablePropsSchema,
   FallbackMessageLLMSchema,
   FallbackMessagePropsSchema,
+  PieChartLLMSchema,
+  PieChartPropsSchema,
+  ProgressBarLLMSchema,
+  ProgressBarPropsSchema,
 } from "@syntave/schemas";
 import { CodeBlock } from "./code-block";
 import { SchemaView } from "./schema-view";
@@ -17,20 +21,138 @@ interface Props {
   params: Promise<{ component: string }>;
 }
 
-const COMPONENT_META: Record<string, { label: string; isGenUI: boolean }> = {
-  "metric-card": { label: "MetricCard", isGenUI: true },
-  "data-table": { label: "DataTable", isGenUI: true },
-  "fallback-message": { label: "FallbackMessage", isGenUI: true },
-  card: { label: "Card", isGenUI: false },
-  table: { label: "Table", isGenUI: false },
-  separator: { label: "Separator", isGenUI: false },
-  text: { label: "Text", isGenUI: false },
-  badge: { label: "Badge", isGenUI: false },
-  skeleton: { label: "Skeleton", isGenUI: false },
-  button: { label: "Button", isGenUI: false },
-  input: { label: "Input", isGenUI: false },
-  icon: { label: "Icon", isGenUI: false },
-};
+type ComponentMeta = { label: string; isGenUI: boolean };
+
+function buildMeta(): Record<string, ComponentMeta> {
+  const genui = [
+    "metric-card",
+    "data-table",
+    "fallback-message",
+    "pie-chart",
+    "progress-bar",
+  ];
+  const primitives = [
+    "accordion",
+    "alert",
+    "alert-dialog",
+    "aspect-ratio",
+    "avatar",
+    "badge",
+    "breadcrumb",
+    "button",
+    "button-group",
+    "calendar",
+    "card",
+    "carousel",
+    "checkbox",
+    "collapsible",
+    "combobox",
+    "command",
+    "context-menu",
+    "date-picker",
+    "dialog",
+    "drawer",
+    "dropdown-menu",
+    "field",
+    "hover-card",
+    "icon",
+    "input",
+    "input-group",
+    "input-otp",
+    "kbd",
+    "label",
+    "menubar",
+    "native-select",
+    "navigation-menu",
+    "pagination",
+    "popover",
+    "progress-bar",
+    "radio-group",
+    "resizable",
+    "scroll-area",
+    "select",
+    "separator",
+    "sheet",
+    "sidebar",
+    "skeleton",
+    "slider",
+    "spinner",
+    "switch",
+    "table",
+    "tabs",
+    "text",
+    "toast",
+    "toggle",
+    "toggle-group",
+    "tooltip",
+  ];
+  const labels: Record<string, string> = {
+    "metric-card": "MetricCard",
+    "data-table": "DataTable",
+    "fallback-message": "FallbackMessage",
+    "pie-chart": "PieChart",
+    "progress-bar": "ProgressBar",
+    accordion: "Accordion",
+    alert: "Alert",
+    "alert-dialog": "AlertDialog",
+    "aspect-ratio": "AspectRatio",
+    avatar: "Avatar",
+    badge: "Badge",
+    breadcrumb: "Breadcrumb",
+    button: "Button",
+    "button-group": "ButtonGroup",
+    calendar: "Calendar",
+    card: "Card",
+    carousel: "Carousel",
+    checkbox: "Checkbox",
+    collapsible: "Collapsible",
+    combobox: "Combobox",
+    command: "Command",
+    "context-menu": "ContextMenu",
+    "date-picker": "DatePicker",
+    dialog: "Dialog",
+    drawer: "Drawer",
+    "dropdown-menu": "DropdownMenu",
+    field: "Field",
+    "hover-card": "HoverCard",
+    icon: "Icon",
+    input: "Input",
+    "input-group": "InputGroup",
+    "input-otp": "InputOTP",
+    kbd: "Kbd",
+    label: "Label",
+    menubar: "Menubar",
+    "native-select": "NativeSelect",
+    "navigation-menu": "NavigationMenu",
+    pagination: "Pagination",
+    popover: "Popover",
+    "radio-group": "RadioGroup",
+    resizable: "Resizable",
+    "scroll-area": "ScrollArea",
+    select: "Select",
+    separator: "Separator",
+    sheet: "Sheet",
+    sidebar: "Sidebar",
+    skeleton: "Skeleton",
+    slider: "Slider",
+    spinner: "Spinner",
+    switch: "Switch",
+    table: "Table",
+    tabs: "Tabs",
+    text: "Text",
+    toast: "Toast",
+    toggle: "Toggle",
+    "toggle-group": "ToggleGroup",
+    tooltip: "Tooltip",
+  };
+  const meta: Record<string, ComponentMeta> = {};
+  for (const g of genui) meta[g] = { label: labels[g] ?? g, isGenUI: true };
+  for (const p of primitives)
+    meta[p] = { label: labels[p] ?? p, isGenUI: false };
+  return meta;
+}
+
+const COMPONENT_META = buildMeta();
 
 const SCHEMA_MAP: Record<string, { llm: string; props: string }> = {
   "metric-card": {
@@ -44,6 +166,14 @@ const SCHEMA_MAP: Record<string, { llm: string; props: string }> = {
   "fallback-message": {
     llm: describeZod(FallbackMessageLLMSchema),
     props: describeZod(FallbackMessagePropsSchema),
+  },
+  "pie-chart": {
+    llm: describeZod(PieChartLLMSchema),
+    props: describeZod(PieChartPropsSchema),
+  },
+  "progress-bar": {
+    llm: describeZod(ProgressBarLLMSchema),
+    props: describeZod(ProgressBarPropsSchema),
   },
 };
 
