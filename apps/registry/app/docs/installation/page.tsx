@@ -13,7 +13,7 @@ const PACKAGES = [
     name: "@syntave/cli",
     desc: "CLI tool to download and install components into your project.",
   },
-  { name: "@syntave/ui", desc: "All 49 UI primitives and GenUI components." },
+  { name: "@syntave/ui", desc: "All 57 UI primitives and GenUI components." },
 ];
 
 export default function DocsInstallationPage() {
@@ -82,7 +82,7 @@ npx genui init`}
           file with a typed{" "}
           <code className="font-mono text-gray-800">componentMap</code>. Run{" "}
           <code className="font-mono text-gray-800">npx genui list</code> to see
-          all 49 components with install status.
+          all 57 components with install status.
         </p>
       </section>
 
@@ -215,7 +215,7 @@ export function AIPanel() {
           6. Available components
         </h2>
         <p className="text-sm leading-relaxed text-gray-600">
-          GenUI ships with <strong>49 components</strong> — 5 GenUI components
+          GenUI ships with <strong>57 components</strong> — 5 GenUI components
           (LLM-driven with Zod schemas) and 44 primitives. Browse the full list
           with <code className="font-mono text-gray-800">npx genui list</code>{" "}
           or visit the component docs.

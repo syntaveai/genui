@@ -22,7 +22,7 @@ User Prompt → LLM (tool calling) → Structured Intent → resolvePayload() �
 
 ## Components
 
-**49 components** — 5 GenUI (LLM-driven with Zod schemas) + 44 primitives.
+**57 components** — 5 GenUI (LLM-driven with Zod schemas) + 52 primitives.
 
 ### GenUI Components
 

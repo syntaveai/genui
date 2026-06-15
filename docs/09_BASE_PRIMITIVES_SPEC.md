@@ -1,6 +1,6 @@
 # Syntave GenUI: Component Registry Reference
 
-**Total: 49 components** (5 GenUI + 44 Primitives)
+**Total: 57 components** (5 GenUI + 52 Primitives)
 
 All components follow the monochrome design system: `gray-50` through `gray-900`, no shadows, standard Tailwind spacing, `cn()` utility for class merging.
 
